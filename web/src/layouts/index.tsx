@@ -76,7 +76,6 @@ export default defineComponent({
       return (
         settingStore.showHeader && (
           <TDesignHeader
-            showLogo={settingStore.showHeaderLogo}
             theme={settingStore.displayMode}
             layout={settingStore.layout}
             isFixed={settingStore.isHeaderFixed}

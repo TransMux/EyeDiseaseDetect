@@ -1,17 +1,6 @@
 <template>
   <div :class="layoutCls">
     <t-head-menu :class="menuCls" :theme="theme" expand-type="popup" :value="active">
-      <template #logo>
-        <span v-if="showLogo" class="header-logo-container" @click="handleNav('/dashboard/base')">
-          <tLogoFull class="t-logo" />
-        </span>
-        <div v-else class="header-operate-left">
-          <t-button theme="default" shape="square" variant="text" @click="changeCollapsed">
-            <t-icon class="collapsed-icon" name="view-list" />
-          </t-button>
-          <search :layout="layout" />
-        </div>
-      </template>
       <MenuContent v-show="layout !== 'side'" class="header-menu" :nav-data="menu" />
       <template #operations>
         <div class="operations-container">
@@ -83,10 +72,6 @@ const props = defineProps({
   layout: {
     type: String,
     default: 'top',
-  },
-  showLogo: {
-    type: Boolean,
-    default: true,
   },
   menu: {
     type: Array as PropType<MenuRoute[]>,
