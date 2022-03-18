@@ -1,3 +1,4 @@
+// TODO：后端返回
 export const TREE_DATA = [
   {
     label: '深圳总部',
@@ -17,7 +18,7 @@ export const TREE_DATA = [
           },
           {
             label: '采购2组',
-            value: '0-1-1',
+            value: '采购2组',
           },
         ],
       },

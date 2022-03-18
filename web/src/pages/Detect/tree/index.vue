@@ -2,17 +2,19 @@
   <div class="table-tree-container">
     <div class="list-tree-wrapper">
       <div class="list-tree-operator">
-        <t-input v-model="filterText" placeholder="请输入关键词" @input="onInput">
-          <template #suffix-icon>
+        <t-input v-model="filterText" clearable placeholder="请输入关键词" @change="onInput">
+          <template #prefix-icon>
             <search-icon size="20px" />
           </template>
         </t-input>
         <t-tree
           :data="TREE_DATA"
+          activable
           hover
           expand-on-click-node
-          :default-expanded="expanded"
+          :expand-level="1"
           :filter="filterByText"
+          @active="handleTreeActive"
         />
       </div>
       <div class="list-tree-content">
@@ -24,16 +26,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { SearchIcon } from 'tdesign-icons-vue-next';
-
+import { TreeNodeValue } from 'tdesign-vue-next';
 import { TREE_DATA } from './constants';
 import CommonTable from '../components/CommonTable.vue';
+
+function handleTreeActive(v: TreeNodeValue) {
+  console.log('Tree Active', v);
+}
 
 const filterByText = ref();
 const filterText = ref();
 
-const expanded = ['0', '0-0', '0-1', '0-2', '0-3', '0-4'];
-
 const onInput = () => {
+  console.log('OnSearchKeyChange');
+
   filterByText.value = (node) => {
     const rs = node.label.indexOf(filterText.value) >= 0;
     return rs;
@@ -41,7 +47,7 @@ const onInput = () => {
 };
 </script>
 <style lang="less" scoped>
-@import "@/style/variables.less";
+@import '@/style/variables.less';
 .table-tree-container {
   background-color: @bg-color-container;
   border-radius: @border-radius;
