@@ -144,6 +144,7 @@ const navToHelper = () => {
 .header-menu {
   flex: 1 1 1;
   display: inline-flex;
+  margin: auto;
 }
 
 .operations-container {
