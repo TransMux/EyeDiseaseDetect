@@ -1,6 +1,7 @@
 <template>
   <div :class="layoutCls">
     <t-head-menu :class="menuCls" :theme="theme" expand-type="popup" :value="active">
+      <div class="dev-pointer">Running in development mode.</div>
       <MenuContent v-show="layout !== 'side'" class="header-menu" :nav-data="menu" />
       <template #operations>
         <div class="operations-container">
@@ -68,13 +69,13 @@ const props = defineProps({
 });
 
 // const router = useRouter();
-const settingStore = useSettingStore();
+// const settingStore = useSettingStore();
 
-const toggleSettingPanel = () => {
-  settingStore.updateConfig({
-    showSettingPanel: true,
-  });
-};
+// const toggleSettingPanel = () => {
+//   settingStore.updateConfig({
+//     showSettingPanel: true,
+//   });
+// };
 
 const active = computed(() => {
   const route = useRoute();
@@ -112,6 +113,13 @@ const navToHelper = () => {
 </script>
 <style lang="less">
 @import '@/style/variables.less';
+
+.dev-pointer {
+  position: absolute;
+  font: bold;
+  color: var(--td-error-color-6);
+}
+
 .@{prefix}-header {
   &-layout {
     height: 64px;
