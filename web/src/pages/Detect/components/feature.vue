@@ -64,44 +64,25 @@ import {
 
 const COLUMNS = [
   {
-    title: '合同名称',
+    title: '疾病名称',
     fixed: 'left',
-    minWidth: '300',
+    minWidth: '200',
     align: 'left',
     colKey: 'name',
   },
-  { title: '合同状态', colKey: 'status', width: 200, cell: { col: 'status' } },
   {
-    title: '合同编号',
+    title: '理论支持',
+    width: 400,
+    ellipsis: true,
+    colKey: 'theory',
+  },
+  {
+    title: '置信度',
     width: 200,
     ellipsis: true,
-    colKey: 'no',
+    colKey: 'confidence',
   },
-  {
-    title: '合同类型',
-    width: 200,
-    ellipsis: true,
-    colKey: 'contractType',
-  },
-  {
-    title: '合同收付类型',
-    width: 200,
-    ellipsis: true,
-    colKey: 'paymentType',
-  },
-  {
-    title: '合同金额 (元)',
-    width: 200,
-    ellipsis: true,
-    colKey: 'amount',
-  },
-  {
-    align: 'left',
-    fixed: 'right',
-    width: 200,
-    colKey: 'op',
-    title: '操作',
-  },
+  { title: '检测状态', colKey: 'status', width: 200, cell: { col: 'status' } },
 ];
 
 const searchForm = {

@@ -1,5 +1,5 @@
 <template>
-  <img src="17_right.jpeg" class="disease_pic" />
+  <img src="@/assets/17_right.jpeg" class="disease_pic" />
 
   <t-tabs v-model="value">
     <t-tab-panel :value="1">

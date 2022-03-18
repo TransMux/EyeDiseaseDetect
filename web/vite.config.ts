@@ -24,6 +24,11 @@ export default defineConfig({
     }),
     svgLoader(),
   ],
+  build: {
+    rollupOptions: {
+      external: ['assets/17_right.jpeg'],
+    },
+  },
 
   server: {
     port: 3002,
