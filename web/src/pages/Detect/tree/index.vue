@@ -10,7 +10,7 @@
         <t-tree :data="TREE_DATA" activable hover expand-on-click-node :expand-level="1" @active="handleTreeActive" />
       </div>
       <div class="list-tree-content">
-        <common-table />
+        <Tabs />
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@ import { ref } from 'vue';
 import { SearchIcon } from 'tdesign-icons-vue-next';
 import { TreeNodeValue } from 'tdesign-vue-next';
 import { TREE_DATA } from './constants';
-import CommonTable from '../components/CommonTable.vue';
+import Tabs from '../components/tabs.vue';
 
 function handleTreeActive(v: TreeNodeValue) {
   console.log('Tree Active', v);
