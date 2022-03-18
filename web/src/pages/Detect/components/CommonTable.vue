@@ -28,4 +28,8 @@ const value = ref(1);
 .tabs-icon-margin {
   margin-right: 4px;
 }
+
+.t-tabs__nav-wrap {
+  margin: auto;
+}
 </style>
