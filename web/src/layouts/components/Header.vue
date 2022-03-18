@@ -5,10 +5,10 @@
       <template #operations>
         <div class="operations-container">
           <!-- 搜索框 -->
-          <search v-if="layout !== 'side'" :layout="layout" />
+          <!-- <search v-if="layout !== 'side'" :layout="layout" /> -->
 
           <!-- 全局通知 -->
-          <notice />
+          <!-- <notice /> -->
 
           <t-tooltip placement="bottom" content="代码仓库">
             <t-button theme="default" shape="square" variant="text" @click="navToGitHub">
@@ -20,32 +20,11 @@
               <t-icon name="help-circle" />
             </t-button>
           </t-tooltip>
-          <t-dropdown :min-column-width="135" trigger="click">
-            <template #dropdown>
-              <t-dropdown-menu>
-                <t-dropdown-item class="operations-dropdown-container-item" @click="handleNav('/user/index')">
-                  <t-icon name="user-circle"></t-icon>个人中心
-                </t-dropdown-item>
-                <t-dropdown-item class="operations-dropdown-container-item" @click="handleLogout">
-                  <t-icon name="poweroff"></t-icon>退出登录
-                </t-dropdown-item>
-              </t-dropdown-menu>
-            </template>
-            <t-button class="header-user-btn" theme="default" variant="text">
-              <template #icon>
-                <t-icon class="header-user-avatar" name="user-circle" />
-              </template>
-              <div class="header-user-account">
-                Tencent
-                <t-icon name="chevron-down" />
-              </div>
-            </t-button>
-          </t-dropdown>
-          <t-tooltip placement="bottom" content="系统设置">
+          <!-- <t-tooltip placement="bottom" content="系统设置">
             <t-button theme="default" shape="square" variant="text">
               <t-icon name="setting" @click="toggleSettingPanel" />
             </t-button>
-          </t-tooltip>
+          </t-tooltip> -->
         </div>
       </template>
     </t-head-menu>
@@ -57,11 +36,8 @@ import { PropType, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useSettingStore } from '@/store';
 import { prefix } from '@/config/global';
-import tLogoFull from '@/assets/assets-logo-full.svg?component';
 import { MenuRoute } from '@/interface';
 
-import Notice from './Notice.vue';
-import Search from './Search.vue';
 import MenuContent from './MenuContent';
 
 const props = defineProps({
@@ -91,7 +67,7 @@ const props = defineProps({
   },
 });
 
-const router = useRouter();
+// const router = useRouter();
 const settingStore = useSettingStore();
 
 const toggleSettingPanel = () => {
@@ -126,26 +102,12 @@ const menuCls = computed(() => {
   ];
 });
 
-const changeCollapsed = () => {
-  settingStore.updateConfig({
-    isSidebarCompact: !settingStore.isSidebarCompact,
-  });
-};
-
-const handleNav = (url) => {
-  router.push(url);
-};
-
-const handleLogout = () => {
-  router.push(`/login?redirect=${router.currentRoute.value.fullPath}`);
-};
-
 const navToGitHub = () => {
-  window.open('https://github.com/tencent/tdesign-vue-next-starter');
+  // window.open('https://github.com/tencent/tdesign-vue-next-starter');
 };
 
 const navToHelper = () => {
-  window.open('http://tdesign.tencent.com/starter/docs/get-started');
+  // window.open('http://tdesign.tencent.com/starter/docs/get-started');
 };
 </script>
 <style lang="less">
