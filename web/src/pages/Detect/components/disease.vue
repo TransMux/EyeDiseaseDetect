@@ -37,13 +37,13 @@
           <a class="t-button-link" @click="handleClickDelete(slotProps)">删除</a>
         </template> -->
       </t-table>
-      <t-dialog
+      <!-- <t-dialog
         v-model:visible="confirmVisible"
         header="确认删除当前所选合同？"
         :body="confirmBody"
         :on-cancel="onCancel"
         @confirm="onConfirmDelete"
-      />
+      /> -->
     </div>
   </div>
 </template>
@@ -54,35 +54,30 @@ import Trend from '@/components/trend/index.vue';
 import request from '@/utils/request';
 import { ResDataType } from '@/interface';
 
-import {
-  CONTRACT_STATUS,
-  CONTRACT_STATUS_OPTIONS,
-  CONTRACT_TYPES,
-  CONTRACT_TYPE_OPTIONS,
-  CONTRACT_PAYMENT_TYPES,
-} from '@/constants';
+import { CONTRACT_STATUS, CONTRACT_TYPES, CONTRACT_PAYMENT_TYPES } from '@/constants';
 
 const COLUMNS = [
   {
     title: '疾病名称',
     fixed: 'left',
-    minWidth: '300',
+    minWidth: '200',
     align: 'left',
     colKey: 'name',
   },
-  { title: '检测状态', colKey: 'status', width: 200, cell: { col: 'status' } },
   {
     title: '理论支持',
-    width: 200,
+    width: 400,
     ellipsis: true,
-    colKey: 'no',
+    colKey: 'theory',
   },
   {
     title: '置信度',
     width: 200,
     ellipsis: true,
-    colKey: 'contractType',
+    colKey: 'confidence',
   },
+  { title: '检测状态', colKey: 'status', width: 200, cell: { col: 'status' } },
+
   // {
   //   title: '合同收付类型',
   //   width: 200,
@@ -104,14 +99,6 @@ const COLUMNS = [
   // },
 ];
 
-const searchForm = {
-  name: '',
-  no: undefined,
-  status: undefined,
-  type: '',
-};
-
-const formData = ref({ ...searchForm });
 const rowKey = 'index';
 const verticalAlign = 'top';
 const hover = true;
@@ -121,7 +108,7 @@ const pagination = ref({
   total: 100,
   defaultCurrent: 1,
 });
-const confirmVisible = ref(false);
+// const confirmVisible = ref(false);
 
 const data = ref([]);
 
@@ -145,54 +132,41 @@ const fetchData = async () => {
   }
 };
 
-const deleteIdx = ref(-1);
-const confirmBody = computed(() => {
-  if (deleteIdx.value > -1) {
-    const { name } = data.value[deleteIdx.value];
-    return `删除后，${name}的所有合同信息将被清空，且无法恢复`;
-  }
-  return '';
-});
+// const deleteIdx = ref(-1);
+// const confirmBody = computed(() => {
+//   if (deleteIdx.value > -1) {
+//     const { name } = data.value[deleteIdx.value];
+//     return `删除后，${name}的所有合同信息将被清空，且无法恢复`;
+//   }
+//   return '';
+// });
 
-const resetIdx = () => {
-  deleteIdx.value = -1;
-};
+// const resetIdx = () => {
+//   deleteIdx.value = -1;
+// };
 
-const onConfirmDelete = () => {
-  // 真实业务请发起请求
-  data.value.splice(deleteIdx.value, 1);
-  pagination.value.total = data.value.length;
-  confirmVisible.value = false;
-  MessagePlugin.success('删除成功');
-  resetIdx();
-};
+// const onConfirmDelete = () => {
+//   // 真实业务请发起请求
+//   data.value.splice(deleteIdx.value, 1);
+//   pagination.value.total = data.value.length;
+//   confirmVisible.value = false;
+//   MessagePlugin.success('删除成功');
+//   resetIdx();
+// };
 
-const onCancel = () => {
-  resetIdx();
-};
+// const onCancel = () => {
+//   resetIdx();
+// };
 
 onMounted(() => {
   fetchData();
 });
 
-const handleClickDelete = ({ row }) => {
-  deleteIdx.value = row.rowIndex;
-  confirmVisible.value = true;
-};
-const onReset = (val) => {
-  console.log(val);
-};
-const onSubmit = (val) => {
-  console.log(val);
-};
 const rehandlePageChange = (curr, pageInfo) => {
   console.log('分页变化', curr, pageInfo);
 };
 const rehandleChange = (changeParams, triggerAndData) => {
   console.log('统一Change', changeParams, triggerAndData);
-};
-const rehandleClickOp = ({ text, row }) => {
-  console.log(text, row);
 };
 </script>
 

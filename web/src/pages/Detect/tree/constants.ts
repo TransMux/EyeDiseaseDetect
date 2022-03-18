@@ -1,7 +1,7 @@
 // TODO：后端返回
 export const TREE_DATA = [
   {
-    label: '深圳总部',
+    label: '3月17日患者',
     value: 0,
     children: [
       {

@@ -7,15 +7,7 @@
             <search-icon size="20px" />
           </template>
         </t-input>
-        <t-tree
-          :data="TREE_DATA"
-          activable
-          hover
-          expand-on-click-node
-          :expand-level="1"
-          :filter="filterByText"
-          @active="handleTreeActive"
-        />
+        <t-tree :data="TREE_DATA" activable hover expand-on-click-node :expand-level="1" @active="handleTreeActive" />
       </div>
       <div class="list-tree-content">
         <common-table />
