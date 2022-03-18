@@ -1,7 +1,7 @@
 <template>
   <div :class="layoutCls">
     <t-head-menu :class="menuCls" :theme="theme" expand-type="popup" :value="active">
-      <div class="dev-pointer">Running in development mode.</div>
+      <div class="dev-pointer">Development mode</div>
       <MenuContent v-show="layout !== 'side'" class="header-menu" :nav-data="menu" />
       <template #operations>
         <div class="operations-container">
