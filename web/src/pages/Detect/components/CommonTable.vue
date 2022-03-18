@@ -1,4 +1,6 @@
 <template>
+  <img src="17_right.jpeg" class="disease_pic" />
+
   <t-tabs v-model="value">
     <t-tab-panel :value="1">
       <template #label> <t-icon name="scan" class="tabs-icon-margin" /> 病变特征检测 </template>
@@ -20,6 +22,14 @@ const value = ref(1);
 </script>
 
 <style>
+.disease_pic {
+  margin: auto;
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 100vh;
+}
+
 .t-tabs__nav-item {
   padding-right: 120px;
   padding-left: 120px;
