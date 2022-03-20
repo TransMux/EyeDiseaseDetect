@@ -1,5 +1,7 @@
 <template>
-  <img src="@/assets/17_right.jpeg" class="disease_pic" />
+  <!-- <img src="@/assets/17_right.jpeg" class="disease_pic" /> -->
+
+  <div id="label-img" class="disease_pic"></div>
 
   <t-tabs v-model="value">
     <t-tab-panel :value="1">
@@ -14,9 +16,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import LabelImg from 'label-img';
 import diseaseVue from './disease.vue';
 import featureVue from './feature.vue';
+
+onMounted(() => {
+  const labelImgElement = document.getElementById('label-img');
+
+  const labeler = new LabelImg(<HTMLDivElement>labelImgElement, {
+    width: 800,
+    height: 600,
+    bgColor: `#000`, // 背景色
+    imagePlacement: 'default', // default | center
+  });
+  // 注册图形
+  labeler.register('polygon', {
+    name: 'Hello',
+    type: 'Polygon',
+    tag: '多边形',
+  });
+  // 加载图片
+  labeler.load('./src/assets/17_right.jpeg');
+  // 选择标注多边形
+  labeler.label('polygon');
+});
 
 const value = ref(1);
 </script>
@@ -24,10 +48,9 @@ const value = ref(1);
 <style>
 .disease_pic {
   margin: auto;
-  display: flex;
+  left: 25%;
   margin-top: 30px;
   margin-bottom: 30px;
-  width: 100vh;
 }
 
 .t-tabs__nav-item {
