@@ -45,7 +45,7 @@ onMounted(() => {
     tag: '多边形',
   });
   // 加载图片
-  // 选择标注多边形 
+  // 选择标注多边形
   // labeler.label('polygon');
 });
 
