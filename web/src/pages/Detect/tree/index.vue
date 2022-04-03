@@ -12,8 +12,7 @@
           activable
           hover
           expand-on-click-node
-          :expand-level="1"
-          :loading="dataLoading"
+          empty="正在加载数据..."
           @active="handleTreeActive"
         />
       </div>
@@ -27,7 +26,6 @@
 import { onMounted, ref } from 'vue';
 import { SearchIcon } from 'tdesign-icons-vue-next';
 import { TreeNodeValue } from 'tdesign-vue-next';
-// import { TREE_DATA } from './constants';
 import Tabs from '../components/tabs.vue';
 import request from '@/utils/request';
 
@@ -53,9 +51,6 @@ const fetchData = async () => {
   try {
     const res: ResDataType = await request.get('/api/tree-list');
     if (res.code === 0) {
-      console.log(res);
-
-      // const { list = [] } = res.data;
       TREE_DATA.value = res.data;
     }
   } catch (e) {
