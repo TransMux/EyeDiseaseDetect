@@ -20,7 +20,7 @@ export const TREE_DATA = [
             label: '患者B',
             value: '患者B',
           },
-        ],  
+        ],
       },
     ],
   },

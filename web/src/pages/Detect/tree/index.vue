@@ -7,7 +7,15 @@
             <search-icon size="20px" />
           </template>
         </t-input>
-        <t-tree :data="TREE_DATA" activable hover expand-on-click-node :expand-level="1" @active="handleTreeActive" />
+        <t-tree
+          :data="TREE_DATA"
+          activable
+          hover
+          expand-on-click-node
+          :expand-level="1"
+          :loading="dataLoading"
+          @active="handleTreeActive"
+        />
       </div>
       <div class="list-tree-content">
         <Tabs />
@@ -16,11 +24,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { SearchIcon } from 'tdesign-icons-vue-next';
 import { TreeNodeValue } from 'tdesign-vue-next';
-import { TREE_DATA } from './constants';
+// import { TREE_DATA } from './constants';
 import Tabs from '../components/tabs.vue';
+import request from '@/utils/request';
 
 function handleTreeActive(v: TreeNodeValue) {
   console.log('Tree Active', v);
@@ -28,6 +37,37 @@ function handleTreeActive(v: TreeNodeValue) {
 
 const filterByText = ref();
 const filterText = ref();
+
+const dataLoading = ref(false);
+
+const TREE_DATA = ref([]);
+
+interface ResDataType {
+  code: number;
+  data: any;
+  msg: string;
+}
+
+const fetchData = async () => {
+  dataLoading.value = true;
+  try {
+    const res: ResDataType = await request.get('/api/tree-list');
+    if (res.code === 0) {
+      console.log(res);
+
+      // const { list = [] } = res.data;
+      TREE_DATA.value = res.data;
+    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    dataLoading.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchData();
+});
 
 const onInput = () => {
   console.log('OnSearchKeyChange');
@@ -39,7 +79,7 @@ const onInput = () => {
 };
 </script>
 <style lang="less" scoped>
-@import '@/style/variables.less';
+@import "@/style/variables.less";
 .table-tree-container {
   background-color: @bg-color-container;
   border-radius: @border-radius;

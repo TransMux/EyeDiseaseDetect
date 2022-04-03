@@ -13,11 +13,19 @@
         @change="rehandleChange"
       >
         <template #status="{ row }">
-          <t-tag v-if="row.status === CONTRACT_STATUS.FAIL" theme="danger" variant="light"> 审核失败 </t-tag>
-          <t-tag v-if="row.status === CONTRACT_STATUS.AUDIT_PENDING" theme="warning" variant="light"> 待审核 </t-tag>
-          <t-tag v-if="row.status === CONTRACT_STATUS.EXEC_PENDING" theme="warning" variant="light"> 待履行 </t-tag>
-          <t-tag v-if="row.status === CONTRACT_STATUS.EXECUTING" theme="success" variant="light"> 履行中 </t-tag>
-          <t-tag v-if="row.status === CONTRACT_STATUS.FINISH" theme="success" variant="light"> 已完成 </t-tag>
+          <t-tag v-if="row.status === CONTRACT_STATUS.FAIL" theme="danger" variant="light">审核失败</t-tag>
+          <t-tag
+            v-if="row.status === CONTRACT_STATUS.AUDIT_PENDING"
+            theme="warning"
+            variant="light"
+          >待审核</t-tag>
+          <t-tag
+            v-if="row.status === CONTRACT_STATUS.EXEC_PENDING"
+            theme="warning"
+            variant="light"
+          >待履行</t-tag>
+          <t-tag v-if="row.status === CONTRACT_STATUS.EXECUTING" theme="success" variant="light">履行中</t-tag>
+          <t-tag v-if="row.status === CONTRACT_STATUS.FINISH" theme="success" variant="light">已完成</t-tag>
         </template>
         <template #contractType="{ row }">
           <p v-if="row.contractType === CONTRACT_TYPES.MAIN">审核失败</p>
@@ -26,10 +34,12 @@
         </template>
         <template #paymentType="{ row }">
           <p v-if="row.paymentType === CONTRACT_PAYMENT_TYPES.PAYMENT" class="payment-col">
-            付款<trend class="dashboard-item-trend" type="up" />
+            付款
+            <trend class="dashboard-item-trend" type="up" />
           </p>
           <p v-if="row.paymentType === CONTRACT_PAYMENT_TYPES.RECIPT" class="payment-col">
-            收款<trend class="dashboard-item-trend" type="down" />
+            收款
+            <trend class="dashboard-item-trend" type="down" />
           </p>
         </template>
         <template #op="slotProps">
@@ -152,9 +162,9 @@ const onCancel = () => {
   resetIdx();
 };
 
-onMounted(() => {
-  fetchData();
-});
+// onMounted(() => {
+//   fetchData();
+// });
 
 const handleClickDelete = ({ row }) => {
   deleteIdx.value = row.rowIndex;
@@ -178,5 +188,5 @@ const rehandleClickOp = ({ text, row }) => {
 </script>
 
 <style lang="less">
-@import './basic.less';
+@import "./basic.less";
 </style>

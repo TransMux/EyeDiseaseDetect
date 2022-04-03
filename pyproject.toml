@@ -6,6 +6,8 @@ authors = ["InEase <InEase28@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+Flask = "^2.1.1"
+Flask-Cors = "^3.0.10"
 
 [tool.poetry.dev-dependencies]
 
