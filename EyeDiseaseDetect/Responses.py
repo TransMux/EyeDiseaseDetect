@@ -4,3 +4,11 @@ def code_0(data):
         "data": data,
         "msg": "",
     }
+
+
+def internal_error(msg):
+    return {
+        "code": 405,
+        "data": None,
+        "msg": msg,
+    }
