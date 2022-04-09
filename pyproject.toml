@@ -8,6 +8,7 @@ authors = ["InEase <InEase28@gmail.com>"]
 python = "^3.8"
 Flask = "^2.1.1"
 Flask-Cors = "^3.0.10"
+service-streamer = "^0.1.2"
 
 [tool.poetry.dev-dependencies]
 
