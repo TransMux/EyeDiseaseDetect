@@ -2,9 +2,9 @@
   <div>
     <div>debug: {{ OpeingImg }}</div>
 
-    <div id="label-img" ref="img" class="disease_pic"></div>
+    <div id="label-img" ref="img" class="disease_pic" v-show="OpeingImg"></div>
 
-    <t-tabs v-model="value">
+    <t-tabs v-model="value" v-if="OpeingImg">
       <t-tab-panel :value="1">
         <template #label>
           <t-icon name="scan" class="tabs-icon-margin" />病变特征检测

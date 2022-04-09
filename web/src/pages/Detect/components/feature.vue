@@ -58,19 +58,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { MessagePlugin } from 'tdesign-vue-next';
 import Trend from '@/components/trend/index.vue';
-import request from '@/utils/request';
-import { ResDataType } from '@/interface';
 
-import {
-  CONTRACT_STATUS,
-  CONTRACT_STATUS_OPTIONS,
-  CONTRACT_TYPES,
-  CONTRACT_TYPE_OPTIONS,
-  CONTRACT_PAYMENT_TYPES,
-} from '@/constants';
+import { CONTRACT_STATUS, CONTRACT_TYPES, CONTRACT_PAYMENT_TYPES } from '@/constants';
+import { SingleEyeImg } from '../types';
 
 const COLUMNS = [
   {
@@ -95,14 +88,6 @@ const COLUMNS = [
   { title: '检测状态', colKey: 'status', width: 200, cell: { col: 'status' } },
 ];
 
-const searchForm = {
-  name: '',
-  no: undefined,
-  status: undefined,
-  type: '',
-};
-
-const formData = ref({ ...searchForm });
 const rowKey = 'index';
 const verticalAlign = 'top';
 const hover = true;
@@ -114,27 +99,10 @@ const pagination = ref({
 });
 const confirmVisible = ref(false);
 
-const data = ref([]);
+const OpeingImg: { value: SingleEyeImg } = inject('OpeningImg');
+const data = OpeingImg.value.meta;
 
 const dataLoading = ref(false);
-const fetchData = async () => {
-  dataLoading.value = true;
-  try {
-    const res: ResDataType = await request.get('/api/get-list');
-    if (res.code === 0) {
-      const { list = [] } = res.data;
-      data.value = list;
-      pagination.value = {
-        ...pagination.value,
-        total: list.length,
-      };
-    }
-  } catch (e) {
-    console.log(e);
-  } finally {
-    dataLoading.value = false;
-  }
-};
 
 const deleteIdx = ref(-1);
 const confirmBody = computed(() => {
@@ -170,12 +138,7 @@ const handleClickDelete = ({ row }) => {
   deleteIdx.value = row.rowIndex;
   confirmVisible.value = true;
 };
-const onReset = (val) => {
-  console.log(val);
-};
-const onSubmit = (val) => {
-  console.log(val);
-};
+
 const rehandlePageChange = (curr, pageInfo) => {
   console.log('分页变化', curr, pageInfo);
 };
