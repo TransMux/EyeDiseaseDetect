@@ -42,21 +42,20 @@ def load_meta(path, base) -> dict:
         return content
 
 
-def search_assets_structure(assets: Path, depth=0):
+def search_assets_structure(path: Path, assets: Path, depth=0):
     result = []
     # 文件夹
-    for index, item in enumerate(assets.iterdir()):
-        key = f"{depth}>{index}"
+    for index, item in enumerate(path.iterdir()):
         if item.is_file():
             # 校验文件拓展名
             base, ext = item.name.rsplit(".", 1)
             if ext in ["jpg", "png"]:
-                meta = load_meta(assets, base)
+                meta = load_meta(path, base)
 
                 result.append(
                     {
                         "label": item.name,
-                        "value": key,
+                        "value": str(item.relative_to(assets)),
                         "children": None,
                         "meta": meta
                     },
@@ -69,11 +68,11 @@ def search_assets_structure(assets: Path, depth=0):
                 pass
         else:
             # 文件夹
-            children = search_assets_structure(item, depth + 1)
+            children = search_assets_structure(item, assets, depth + 1)
             result.append(
                 {
                     "label": item.name,
-                    "value": key,
+                    "value": str(item.relative_to(assets)),
                     "children": children,
                     "meta": None
                 },

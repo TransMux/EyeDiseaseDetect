@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 
 from EyeDiseaseDetect.Responses import code_0, internal_error
@@ -9,6 +9,7 @@ from EyeDiseaseDetect.utils import search_assets_structure
 app = Flask(__name__)
 cors = CORS(app, supports_credentials=True)
 
+data_path: Path = Path()
 Tree = None
 
 
@@ -24,12 +25,23 @@ def get_tree_data():
     return code_0(Tree)
 
 
+@app.route("/api/picture/<path:path>")
+def send_report(path):
+    return send_from_directory(str(data_path / "assets"), path)
+
+
 def entry():
-    global Tree
+    # 读取配置文件
+    global data_path
     data_path = Path(r"E:\competition\EyeDiseaseDetect\data")
-    Tree = search_assets_structure(data_path / "assets")
+
+    # 读取文件树
+    global Tree
+    Tree = search_assets_structure(data_path / "assets", data_path / "assets")
     print(Tree)
-    # app.run(port=21335)
+
+    # 启动后台服务器
+    app.run(port=21335)
 
 
 if __name__ == '__main__':
