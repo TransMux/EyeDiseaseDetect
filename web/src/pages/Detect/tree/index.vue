@@ -13,7 +13,7 @@
           hover
           expand-on-click-node
           empty="正在加载数据..."
-          @active="handleTreeActive"
+          @click="handleTreeActive"
         />
       </div>
       <div class="list-tree-content">
@@ -23,14 +23,21 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { provide, onMounted, ref } from 'vue';
 import { SearchIcon } from 'tdesign-icons-vue-next';
-import { TreeNodeValue } from 'tdesign-vue-next';
 import Tabs from '../components/tabs.vue';
 import request from '@/utils/request';
+import { SingleEyeImg } from '../types';
 
-function handleTreeActive(v: TreeNodeValue) {
-  console.log('Tree Active', v);
+const OpeningImg = ref<SingleEyeImg>(null);
+provide('OpeningImg', OpeningImg);
+
+function handleTreeActive({ node }: { node: { data: SingleEyeImg } }) {
+  console.log(node);
+  if (!node.data.children) {
+    console.log('is img');
+    OpeningImg.value = node.data;
+  }
 }
 
 const filterByText = ref();
@@ -73,6 +80,7 @@ const onInput = () => {
   };
 };
 </script>
+
 <style lang="less" scoped>
 @import "@/style/variables.less";
 .table-tree-container {
