@@ -20,7 +20,7 @@ class BaseModel(ManagedModel, ABC):
 
         pass
 
-    def _predict(self, data_pats: List[Path]) -> List:
+    def _predict(self, data_paths: List[Path]) -> List:
         # return self.model.predict(batch)
         raise NotImplementedError()
 
