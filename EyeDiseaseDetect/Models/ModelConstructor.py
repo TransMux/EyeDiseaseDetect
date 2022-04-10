@@ -1,18 +1,15 @@
+from abc import ABC
 from pathlib import Path
 from typing import List
 
 from service_streamer import ThreadedStreamer, ManagedModel, Streamer
 
 
-class BaseModel(ManagedModel):
+class BaseModel(ManagedModel, ABC):
     """Interface"""
     worker_num: int = 4
     batch: int = 1
     latency: float = 0.1
-
-    def init_model(self):
-        # self.model = TextInfillingModel()
-        pass
 
     def predict(self, data_paths: List[Path]) -> List:
         # 也可能不会有返回值
@@ -25,7 +22,7 @@ class BaseModel(ManagedModel):
 
     def _predict(self, data_pats: List[Path]) -> List:
         # return self.model.predict(batch)
-        pass
+        raise NotImplementedError()
 
     def write_predict_result(self, result: List[Path], predicts: List):
         pass
