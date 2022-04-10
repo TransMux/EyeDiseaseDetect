@@ -9,6 +9,12 @@ def change_status(data_path: List[Path], model_name: str, status: str) -> None:
     for file in data_path:
         with file.with_suffix(".json").open("r") as f:
             data = json.load(f)
-        data["result"][model_name] = status
+        try:
+            data["result"][model_name]["status"] = status
+        except KeyError:
+            data["result"][model_name] = {
+                "status": status,
+                "result": None
+            }
         with file.with_suffix(".json").open("w") as f:
             json.dump(data, f)
