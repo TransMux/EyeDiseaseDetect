@@ -7,8 +7,9 @@ from flask_cors import CORS
 from service_streamer import ThreadedStreamer
 
 from EyeDiseaseDetect.Models.ModelConstructor import ConstructModelPipe
+from EyeDiseaseDetect.Models.utils import change_status
 from EyeDiseaseDetect.Models.yolov5s import Yolov5s
-from EyeDiseaseDetect.Responses import code_0, internal_error
+from EyeDiseaseDetect.Responses import code_0, internal_error, NotAllowed
 from EyeDiseaseDetect.utils import search_assets_structure
 
 app = Flask(__name__)
@@ -61,8 +62,21 @@ def model_list():
 
 @app.route("/api/task/<model>/<path:path>")
 def submit(path, model):
+    img_path = data_path / "assets" / path
     try:
-        img_path = data_path / "assets" / path
+        # 判断是否预测过
+        with img_path.with_suffix(".json").open("r") as f:
+            meta = json.load(f)
+
+        if meta["result"][model]["status"] in ["Waiting", "Predict", "Finish"]:
+            return NotAllowed(f"{path} -> {model}模型已在队列中:{meta['result'][model]['status']}")
+    except KeyError:
+        print(f"{path} to {model} 未被预测，添加到队列中...")
+        change_status([img_path], model, "Waiting")
+    finally:
+        del meta  # 释放内存
+
+    try:
         assert img_path.exists(), "FileNotFound"
         Running_Tasks.append(
             StreamerMap[model].submit(
