@@ -13,15 +13,11 @@ from EyeDiseaseDetect.utils import search_assets_structure
 app = Flask(__name__)
 cors = CORS(app, supports_credentials=True)
 
-data_path: Path = Path()
-Tree = None
-
 # 异步预测
 Running_Tasks = []
+
+
 # 每次添加模型都必须在这里配置！
-StreamerMap: Dict[str, ThreadedStreamer] = {
-    "Yolov5s": ConstructModelPipe(Yolov5s)
-}
 
 
 @app.route("/")
@@ -48,34 +44,27 @@ def model_list():
     )
 
 
-@app.route("/api/task/<path:path>/<model>")
-def submit(path, model):
-    try:
-        img_path = data_path / "assets" / path
-        assert img_path.exists(), "FileNotFound"
-        Running_Tasks.append(
-            StreamerMap[model].submit(
-                [img_path]
-            )
-        )
-        return code_0(None, msg="成功新建异步预测任务")
-    except Exception as e:
-        return internal_error(str(e))
-
-
-def entry():
-    # 读取配置文件
-    global data_path
-    data_path = Path(r"E:\competition\EyeDiseaseDetect\data")
-
-    # 读取文件树
-    global Tree
-    Tree = search_assets_structure(data_path / "assets", data_path / "assets")
-    print(Tree)
-
-    # 启动后台服务器
-    app.run(port=21335)
-
+# @app.route("/api/task/<path:path>/<model>")
+# def submit(path, model):
+#     try:
+#         img_path = data_path / "assets" / path
+#         assert img_path.exists(), "FileNotFound"
+#         Running_Tasks.append(
+#             StreamerMap[model].submit(
+#                 [img_path]
+#             )
+#         )
+#         return code_0(None, msg="成功新建异步预测任务")
+#     except Exception as e:
+#         return internal_error(str(e))
 
 if __name__ == '__main__':
-    entry()
+    data_path = Path(r"E:\competition\EyeDiseaseDetect\data")
+    Tree = search_assets_structure(data_path / "assets", data_path / "assets")
+    print(Tree)
+    StreamerMap: Dict[str, ThreadedStreamer] = {
+        "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models"))
+    }
+
+    # 启动后台服务器
+    # app.run(port=21335)

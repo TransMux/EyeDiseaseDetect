@@ -32,6 +32,6 @@ class BaseModel(ManagedModel, ABC):
 
 
 def ConstructModelPipe(model: BaseModel):
-    pipe = Streamer(model, model.batch, model.latency, worker_num=model.worker_num)
+    pipe = Streamer(model.predict, model.batch, model.latency, worker_num=model.worker_num)
     streamer = ThreadedStreamer(pipe.predict, model.batch, model.latency)
     return streamer
