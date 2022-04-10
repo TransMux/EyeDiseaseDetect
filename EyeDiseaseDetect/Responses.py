@@ -12,3 +12,11 @@ def internal_error(msg):
         "data": None,
         "msg": msg,
     }
+
+
+def NotAllowed(msg):
+    return {
+        "code": 403,
+        "data": None,
+        "msg": msg,
+    }
