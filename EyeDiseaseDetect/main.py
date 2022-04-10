@@ -48,9 +48,14 @@ def send_report(path):
 
 @app.route("/api/meta/<path:path>")
 def get_meta(path):
-    with (data_path / "assets" / path).with_suffix(".json").open("r") as f:
-        meta = json.load(f)
-    return code_0(meta)
+    try:
+        with (data_path / "assets" / path).with_suffix(".json").open("r") as f:
+            meta = json.load(f)
+        return code_0(meta)
+    except FileNotFoundError:
+        return internal_error(f"不存在 {path} 对应的meta文件，请考虑Update Tree List")
+    except Exception as e:
+        return internal_error(e.__repr__())
 
 
 @app.route("/api/models/list")
