@@ -25,10 +25,17 @@ def hello_world():
     return "<p>Hello, World!</p>"
 
 
-@app.route("/api/tree-list")
+@app.route("/api/tree/list")
 def get_tree_data():
     if Tree is None:
         return internal_error("图片树未初始化")
+    return code_0(Tree)
+
+
+@app.route("/api/tree/update")
+def resync():
+    global Tree
+    Tree = search_assets_structure(data_path / "assets", data_path / "assets")
     return code_0(Tree)
 
 
