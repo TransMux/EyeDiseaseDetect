@@ -12,6 +12,11 @@ cors = CORS(app, supports_credentials=True)
 data_path: Path = Path()
 Tree = None
 
+# 异步预测
+Running_Tasks = []
+StreamerMap = {
+}
+
 
 @app.route("/")
 def hello_world():
@@ -28,6 +33,21 @@ def get_tree_data():
 @app.route("/api/picture/<path:path>")
 def send_report(path):
     return send_from_directory(str(data_path / "assets"), path)
+
+
+@app.route("/api/task/<path:path>/<model>")
+def submit(path, model):
+    try:
+        img_path = data_path / "assets" / path
+        assert img_path.exists(), "FileNotFound"
+        Running_Tasks.append(
+            StreamerMap[model].submit(
+                [img_path]
+            )
+        )
+        return code_0(None, msg="成功新建异步预测任务")
+    except Exception as e:
+        return internal_error(str(e))
 
 
 def entry():

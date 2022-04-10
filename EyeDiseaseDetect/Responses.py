@@ -1,8 +1,8 @@
-def code_0(data):
+def code_0(data, msg=""):
     return {
         "code": 0,
         "data": data,
-        "msg": "",
+        "msg": msg,
     }
 
 
