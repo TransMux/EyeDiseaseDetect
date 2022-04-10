@@ -8,7 +8,7 @@ class BaseModel:
     """Interface"""
     worker_num: int = 4
     batch: int = 10
-    latency: float = 10
+    latency: float = 1
 
     def predict(self, data_paths: List[Path]) -> List:
         # 也可能不会有返回值

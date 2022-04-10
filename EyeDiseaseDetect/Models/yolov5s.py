@@ -13,7 +13,7 @@ class Yolov5s(BaseModel):
         self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=self.model_path / 'hub/yolov5s.pt')
 
     def predict(self, data_paths: List[Path]) -> List:
-        change_status(data_paths, "Predict")
+        change_status(data_paths, self.__class__.__name__, "Predict")
         result = self.model(data_paths).xyxy
-        change_status(data_paths, "Finish")
+        change_status(data_paths, self.__class__.__name__, "Finish")
         return result

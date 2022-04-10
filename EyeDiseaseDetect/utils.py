@@ -23,7 +23,7 @@ risk_evaluate_template = {
 def meta_template():
     return {
         "create_time": int(time.time()),
-        "result": []
+        "result": {}
     }
 
 
