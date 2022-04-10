@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from typing import Dict
 
@@ -42,6 +43,13 @@ def resync():
 @app.route("/api/picture/<path:path>")
 def send_report(path):
     return send_from_directory(str(data_path / "assets"), path)
+
+
+@app.route("/api/meta/<path:path>")
+def get_meta(path):
+    with (data_path / "assets" / path).with_suffix(".json").open("r") as f:
+        meta = json.load(f)
+    return code_0(meta)
 
 
 @app.route("/api/models/list")
