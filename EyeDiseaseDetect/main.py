@@ -44,19 +44,20 @@ def model_list():
     )
 
 
-# @app.route("/api/task/<path:path>/<model>")
-# def submit(path, model):
-#     try:
-#         img_path = data_path / "assets" / path
-#         assert img_path.exists(), "FileNotFound"
-#         Running_Tasks.append(
-#             StreamerMap[model].submit(
-#                 [img_path]
-#             )
-#         )
-#         return code_0(None, msg="成功新建异步预测任务")
-#     except Exception as e:
-#         return internal_error(str(e))
+@app.route("/api/task/<model>/<path:path>")
+def submit(path, model):
+    try:
+        img_path = data_path / "assets" / path
+        assert img_path.exists(), "FileNotFound"
+        Running_Tasks.append(
+            StreamerMap[model].submit(
+                [img_path]
+            )
+        )
+        return code_0(None, msg="成功新建异步预测任务")
+    except Exception as e:
+        return internal_error(e.__repr__())
+
 
 if __name__ == '__main__':
     data_path = Path(r"E:\competition\EyeDiseaseDetect\data")
@@ -67,4 +68,4 @@ if __name__ == '__main__':
     }
 
     # 启动后台服务器
-    # app.run(port=21335)
+    app.run(port=21335)
