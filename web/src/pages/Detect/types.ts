@@ -7,6 +7,7 @@ export interface Predict {
   y2: number;
   label: string;
   confidence: number;
+  category?: 'disease' | 'risk'; // 类别 传到表格中的数据务必保证
 }
 
 interface PicData {

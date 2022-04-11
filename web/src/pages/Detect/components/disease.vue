@@ -33,7 +33,6 @@ const OpeingImg: { value: SingleEyeImg } = inject('OpeningImg');
 
 const props = defineProps<{
   disease: Predict[];
-  info: { String: Model[] };
 }>();
 
 console.log(props);

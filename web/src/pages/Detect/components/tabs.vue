@@ -13,7 +13,7 @@
         <template #label>
           <t-icon name="scan" class="tabs-icon-margin" />病变特征检测
         </template>
-        <diseaseVue :disease="DiseaseMetas" :info="model_info" />
+        <diseaseVue :disease="DiseaseMetas" />
       </t-tab-panel>
       <t-tab-panel :value="2">
         <template #label>
@@ -85,6 +85,7 @@ onMounted(() => {
     RiskMetas.value = []
     for (var model in results) {
       console.log(model);
+      results[model]["category"] = model_info.value[model].category
       if (model_info.value[model].category == "disease") {
         DiseaseMetas.value.push(results[model])
       } else if (model_info.value[model].category == "risk") {
