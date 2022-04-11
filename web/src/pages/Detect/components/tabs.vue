@@ -8,7 +8,7 @@
 
     <div id="label-img" ref="img" class="disease_pic"></div>
 
-    <t-tabs v-model="value" v-if="OpeingImg">
+    <t-tabs v-model="value" v-if="OpeningImg">
       <t-tab-panel :value="1">
         <template #label>
           <t-icon name="scan" class="tabs-icon-margin" />病变特征检测
@@ -30,7 +30,7 @@ import { inject, onMounted, provide, ref, watch, watchEffect } from 'vue';
 import LabelImg from 'label-img';
 import diseaseVue from './disease.vue';
 import featureVue from './feature.vue';
-import { SingleEyeImg } from '../types';
+import { SingleEyeImg, Predict } from '../types';
 import { ResDataType } from '@/interface';
 import request from '@/utils/request';
 
@@ -41,6 +41,9 @@ interface Model {
   model: string // 模型真实名称
   category: "disease" | "risk" // 类别
 }
+
+const DiseaseMetas = ref<Predict[]>([])
+const RiskMetas = ref<Predict[]>([])
 
 onMounted(() => fetchModelInfo())
 
@@ -57,14 +60,12 @@ const fetchModelInfo = async () => {
   }
 };
 
-
-
 // 挂载
 let labeler: LabelImg
 const img = ref<HTMLDivElement>(null);
 
 // TODO: 解决ref响应式ReplImp的类型问题 ref<SingleEyeImg> 会报 “ref”表示值，但在此处用作类型。是否指“类型 ref”?
-const OpeingImg: { value: SingleEyeImg } = inject('OpeningImg');
+const OpeningImg: { value: SingleEyeImg } = inject('OpeningImg');
 onMounted(() => {
   // https://github.com/hold-baby/label-img
   labeler = new LabelImg(<HTMLDivElement>img.value, {
@@ -77,10 +78,27 @@ onMounted(() => {
   });
 
   // 加载图片
-  watch(OpeingImg, () => {
-    const url = `http://localhost:21335/api/picture/${OpeingImg.value.value}`
+  watch(OpeningImg, () => {
+    const url = `http://localhost:21335/api/picture/${OpeningImg.value.value}`
     console.log("<Tabs> Load url:", url);
     labeler.load(url);
+
+    // 对图片的meta.result信息进行归类
+    let results = OpeningImg.value.meta.result
+    DiseaseMetas.value = []
+    RiskMetas.value = []
+    for (var model in results) {
+      console.log(model);
+      if (model_info[model].category == "disease") {
+        DiseaseMetas.value.push(results[model])
+      } else if (model_info[model].category == "risk") {
+        RiskMetas.value.push(results[model])
+      }
+    }
+    console.log("归类完成:");
+    console.log("disease: ", DiseaseMetas.value);
+    console.log("risk: ", RiskMetas.value);
+
   })
 })
 
