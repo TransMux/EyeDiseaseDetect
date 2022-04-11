@@ -26,7 +26,6 @@ const OpeningImg = ref<SingleEyeImg>(null);
 provide('OpeningImg', OpeningImg);
 
 function handleTreeActive({ node }: { node: { data: SingleEyeImg } }) {
-  console.log(node);
   if (!node.data.children) {
     console.log('is img');
     OpeningImg.value = node.data;

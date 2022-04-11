@@ -1,8 +1,12 @@
 <template>
   <div>
-    <div>debug: {{ OpeingImg }}</div>
+    <div class="controls">
+      <t-button theme="default" variant="outline" @click="LabelerResize"> 重置图片 </t-button>
+    </div>
 
-    <div id="label-img" ref="img" class="disease_pic" v-show="OpeingImg"></div>
+    <t-divider />
+
+    <div id="label-img" ref="img" class="disease_pic"></div>
 
     <t-tabs v-model="value" v-if="OpeingImg">
       <t-tab-panel :value="1">
@@ -15,7 +19,7 @@
         <template #label>
           <t-icon name="chart-bubble" class="tabs-icon-margin" />疾病风险评估
         </template>
-        <diseaseVue />
+        <!-- <diseaseVue /> -->
       </t-tab-panel>
     </t-tabs>
   </div>
@@ -27,8 +31,33 @@ import LabelImg from 'label-img';
 import diseaseVue from './disease.vue';
 import featureVue from './feature.vue';
 import { SingleEyeImg } from '../types';
+import { ResDataType } from '@/interface';
+import request from '@/utils/request';
 
-const { Shape } = LabelImg;
+// const { Shape } = LabelImg;
+//  加载模型信息
+interface Model {
+  name: string // 模型显示名称
+  model: string // 模型真实名称
+  category: "disease" | "risk" // 类别
+}
+
+onMounted(() => fetchModelInfo())
+
+let model_info: Model[] = null
+const fetchModelInfo = async () => {
+  try {
+    const res: ResDataType = await request.get('/api/models/list');
+    if (res.code === 0) {
+      model_info = res.data
+      console.log("模型信息:", model_info);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+
 
 // 挂载
 let labeler: LabelImg
@@ -44,7 +73,7 @@ onMounted(() => {
     height: 600,
     bgColor: `#000`, // 背景色
     //@ts-ignore
-    imagePlacement: 'default', // default | center
+    imagePlacement: 'center', // default | center
   });
 
   // 加载图片
@@ -55,6 +84,9 @@ onMounted(() => {
   })
 })
 
+function LabelerResize() {
+  labeler.resize()
+}
 
 
 // // 注册图形
@@ -90,5 +122,16 @@ const value = ref(1);
 
 .t-tabs__nav-wrap {
   margin: auto;
+}
+
+.controls {
+  left: 25%;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.controls>button {
+  margin: auto;
+  display: block;
 }
 </style>
