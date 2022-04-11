@@ -15,6 +15,11 @@ interface PicData {
   result: Predict[]; // meta data
 }
 
+export interface Model {
+  model: string; // 模型真实名称
+  category: 'disease' | 'risk'; // 类别
+}
+
 export interface SingleEyeImg {
   label: string;
   value: string; // 图片对应地址

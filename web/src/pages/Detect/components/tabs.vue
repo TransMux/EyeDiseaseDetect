@@ -13,7 +13,7 @@
         <template #label>
           <t-icon name="scan" class="tabs-icon-margin" />病变特征检测
         </template>
-        <featureVue />
+        <diseaseVue :disease="DiseaseMetas" :info="model_info" />
       </t-tab-panel>
       <t-tab-panel :value="2">
         <template #label>
@@ -28,32 +28,28 @@
 <script setup lang="ts">
 import { inject, onMounted, provide, ref, watch, watchEffect } from 'vue';
 import LabelImg from 'label-img';
+import riskVue from './risk.vue';
 import diseaseVue from './disease.vue';
-import featureVue from './feature.vue';
-import { SingleEyeImg, Predict } from '../types';
+import { SingleEyeImg, Predict, Model } from '../types';
 import { ResDataType } from '@/interface';
 import request from '@/utils/request';
 
 // const { Shape } = LabelImg;
 //  加载模型信息
-interface Model {
-  name: string // 模型显示名称
-  model: string // 模型真实名称
-  category: "disease" | "risk" // 类别
-}
+
 
 const DiseaseMetas = ref<Predict[]>([])
 const RiskMetas = ref<Predict[]>([])
 
 onMounted(() => fetchModelInfo())
 
-let model_info: Model[] = null
+const model_info = ref<{ String: Model[] }>(null)
 const fetchModelInfo = async () => {
   try {
     const res: ResDataType = await request.get('/api/models/list');
     if (res.code === 0) {
-      model_info = res.data
-      console.log("模型信息:", model_info);
+      model_info.value = res.data
+      console.log("模型信息:", model_info.value);
     }
   } catch (e) {
     console.log(e);
@@ -89,9 +85,9 @@ onMounted(() => {
     RiskMetas.value = []
     for (var model in results) {
       console.log(model);
-      if (model_info[model].category == "disease") {
+      if (model_info.value[model].category == "disease") {
         DiseaseMetas.value.push(results[model])
-      } else if (model_info[model].category == "risk") {
+      } else if (model_info.value[model].category == "risk") {
         RiskMetas.value.push(results[model])
       }
     }
