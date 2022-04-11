@@ -7,7 +7,7 @@ export interface Predict {
   y2: number;
   label: string;
   confidence: number;
-  category?: 'disease' | 'risk'; // 类别 传到表格中的数据务必保证
+  name?: string; // 模型外显名称 传到表格中的数据务必保证
 }
 
 interface PicData {
@@ -17,7 +17,7 @@ interface PicData {
 }
 
 export interface Model {
-  model: string; // 模型真实名称
+  name: string; // 模型外显名称
   category: 'disease' | 'risk'; // 类别
 }
 

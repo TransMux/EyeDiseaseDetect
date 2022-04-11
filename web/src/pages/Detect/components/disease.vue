@@ -43,7 +43,7 @@ watch(OpeingImg, () => {
 
 const COLUMNS = [
   {
-    title: '疾病名称',
+    title: '检测项目',
     fixed: 'left',
     minWidth: '200',
     align: 'left',
