@@ -101,8 +101,8 @@ if __name__ == '__main__':
     StreamerMap: Dict[str, ThreadedStreamer] = {
         "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models")),
     }
-    ModelInfo: Dict[str, str] = {
-        "Yolov5s": "测试模型"
+    ModelInfo: Dict[str, Dict[str, str]] = {
+        "Yolov5s": {"name": "测试模型", "category": "disease"}
     }
 
     # 启动后台服务器
