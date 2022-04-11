@@ -7,14 +7,7 @@
             <search-icon size="20px" />
           </template>
         </t-input>
-        <t-tree
-          :data="TREE_DATA"
-          activable
-          hover
-          expand-on-click-node
-          empty="正在加载数据..."
-          @click="handleTreeActive"
-        />
+        <t-tree :data="TREE_DATA" activable hover expand-on-click-node empty="正在加载数据..." @click="handleTreeActive" />
       </div>
       <div class="list-tree-content">
         <Tabs />
@@ -56,7 +49,7 @@ interface ResDataType {
 const fetchData = async () => {
   dataLoading.value = true;
   try {
-    const res: ResDataType = await request.get('/api/tree-list');
+    const res: ResDataType = await request.get('/api/tree/list');
     if (res.code === 0) {
       TREE_DATA.value = res.data;
     }
@@ -82,7 +75,8 @@ const onInput = () => {
 </script>
 
 <style lang="less" scoped>
-@import "@/style/variables.less";
+@import '@/style/variables.less';
+
 .table-tree-container {
   background-color: @bg-color-container;
   border-radius: @border-radius;
