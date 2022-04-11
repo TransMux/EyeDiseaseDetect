@@ -39,3 +39,15 @@ def change_status(data_path: List[Path], model_name: str, status: str) -> None:
             data["result"][model_name] = predict_result_template(status=status)
         with file.with_suffix(".json").open("w") as f:
             json.dump(data, f)
+
+
+def update_meta(data_path: List[Path], model_name: str, data: dict):
+    for file in data_path:
+        with file.with_suffix(".json").open("r") as f:
+            origin = json.load(f)
+        for key, value in data.items():
+            if value is not None:
+                # 更新值
+                origin[key] = value
+        with file.with_suffix(".json").open("w") as f:
+            json.dump(data, f)
