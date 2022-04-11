@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
 from flask import Flask, send_from_directory
 from flask_cors import CORS
@@ -101,9 +101,9 @@ if __name__ == '__main__':
     StreamerMap: Dict[str, ThreadedStreamer] = {
         "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models")),
     }
-    ModelInfo: Dict[str, Dict[str, str]] = {
-        "Yolov5s": {"name": "测试模型", "category": "disease"}
-    }
+    ModelInfo: List[Dict[str, str]] = [
+        {"name": "测试模型", "model": "Yolov5s", "category": "disease"}
+    ]
 
     # 启动后台服务器
     app.run(port=21335)
