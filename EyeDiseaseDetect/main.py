@@ -61,7 +61,7 @@ def get_meta(path):
 @app.route("/api/models/list")
 def model_list():
     return code_0(
-        list(StreamerMap.keys())
+        ModelInfo
     )
 
 
@@ -76,8 +76,7 @@ def submit(path, model):
         if meta["result"][model]["status"] in ["Waiting", "Predict", "Finish"]:
             return NotAllowed(f"{path} -> {model}模型已在队列中:{meta['result'][model]['status']}")
     except KeyError:
-        print(f"{path} to {model} 未被预测，添加到队列中...")
-        change_status([img_path], model, "Waiting")
+        pass
     finally:
         del meta  # 释放内存
 
@@ -88,6 +87,8 @@ def submit(path, model):
                 [img_path]
             )
         )
+        print(f"{path} to {model} 未被预测，添加到队列中...")
+        change_status([img_path], model, "Waiting")
         return code_0(None, msg="成功新建异步预测任务")
     except Exception as e:
         return internal_error(e.__repr__())
@@ -98,7 +99,10 @@ if __name__ == '__main__':
     Tree = search_assets_structure(data_path / "assets", data_path / "assets")
     print(Tree)
     StreamerMap: Dict[str, ThreadedStreamer] = {
-        "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models"))
+        "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models")),
+    }
+    ModelInfo: Dict[str, str] = {
+        "Yolov5s": "测试模型"
     }
 
     # 启动后台服务器

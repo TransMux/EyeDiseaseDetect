@@ -33,6 +33,7 @@ def search_assets_structure(path: Path, assets: Path, depth=0):
             # 校验文件拓展名
             base, ext = item.name.rsplit(".", 1)
             if ext in ["jpg", "png"]:
+                # TODO: 无法处理存在json文件但是为空的奇怪情况
                 meta = load_meta(path, base)
 
                 result.append(
