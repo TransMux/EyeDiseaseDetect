@@ -2,23 +2,6 @@ import json
 import time
 from pathlib import Path
 
-disease_detection_template = {
-    "model": None,
-    "status": None,
-    "x1": None,
-    "y1": None,
-    "x2": None,
-    "y2": None,
-    "confidence": None
-}
-
-risk_evaluate_template = {
-    "model": None,
-    "status": None,
-    "disease": None,
-    "confidence": None
-}
-
 
 def meta_template():
     return {
