@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List
 
 
-def disease_detection_template(
+def predict_result_template(
         name=None,
         model=None,
         status=None,
@@ -11,6 +11,7 @@ def disease_detection_template(
         y1=None,
         x2=None,
         y2=None,
+        disease=None,
         confidence=None
 ):
     return {
@@ -21,21 +22,6 @@ def disease_detection_template(
         "y1": y1,
         "x2": x2,
         "y2": y2,
-        "confidence": confidence
-    }
-
-
-def risk_evaluate_template(
-        name=None,
-        model=None,
-        status=None,
-        disease=None,
-        confidence=None,
-):
-    return {
-        "name": name,
-        "model": model,
-        "status": status,
         "disease": disease,
         "confidence": confidence
     }
