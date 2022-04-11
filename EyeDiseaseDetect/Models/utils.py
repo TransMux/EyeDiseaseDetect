@@ -36,9 +36,6 @@ def change_status(data_path: List[Path], model_name: str, status: str) -> None:
         try:
             data["result"][model_name]["status"] = status
         except KeyError:
-            data["result"][model_name] = {
-                "status": status,
-                "result": None
-            }
+            data["result"][model_name] = predict_result_template(status=status)
         with file.with_suffix(".json").open("w") as f:
             json.dump(data, f)
