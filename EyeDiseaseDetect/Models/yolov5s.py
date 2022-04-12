@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import List
 
 import torch
+from PIL import Image
 
 from EyeDiseaseDetect.Models.ModelConstructor import BaseModel
 from EyeDiseaseDetect.Models.utils import change_status, update_meta, predict_result_template, label_template
@@ -21,17 +22,21 @@ class Yolov5s(BaseModel):
         # 1 * 1 * 6 需要把前面两个1 flatten 一下
         labels = []
         for i, batch in enumerate(cors):
+            with Image.open(data_paths[i]) as img:
+                width, height = img.size
             overall_confident = 0
             for label in batch:
                 overall_confident += float(label[4])
+
+                x1 = float(label[0]) * width
+                y1 = float(label[1]) * height
+                x2 = float(label[2]) * width
+                y2 = float(label[3]) * height
                 labels.append(
                     label_template(
                         shape="Ract",
                         positions=[
-                            [float(label[0]),
-                             float(label[1]),
-                             ], [float(label[2]),
-                                 float(label[3]), ]
+                            [x1, y1, ], [x2, y1], [x2, y2], [x1, y2]
                         ],
                         confidence=float(label[4]),
                         label=names[int(label[5])]

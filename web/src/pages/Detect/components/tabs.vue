@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="controls">
+    <!-- <div class="controls">
       <t-button theme="default" variant="outline" @click="props.update"> 刷新数据 </t-button>
       <t-button theme="default" variant="outline" @click="LabelerResize"> 重置图片 </t-button>
-    </div>
+    </div> -->
 
-    <t-divider />
+    <!-- <t-divider /> -->
 
     <div id="label-img" ref="img" class="disease_pic"></div>
 
@@ -84,7 +84,7 @@ onMounted(() => {
   // https://github.com/hold-baby/label-img
   labeler = new LabelImg(<HTMLDivElement>img.value, {
     //@ts-ignore
-    width: 800,
+    width: 1400,
     height: 600,
     bgColor: `#000`, // 背景色
     //@ts-ignore
@@ -115,9 +115,9 @@ function focus(row: ListData) {
       positions: label.positions, // 坐标集合 ex: [[0, 0], [100, 100]]
       tag: `${label.label}:${label.confidence}`, // 展示在图形上的说明标签
       showTag: true, // 是否展示标签
-      // closed, // 是否闭合
+      closed: true, // 是否闭合
       // visible, // 是否可见
-      // active, // 是否被选中
+      active: false, // 是否被选中
       // disabled, // 是否禁用
       /**
        * { normal, active, disabled }
@@ -161,7 +161,7 @@ const value = ref(1);
 <style>
 .disease_pic {
   margin: auto;
-  left: 25%;
+  /* left: 25%; */
   margin-top: 30px;
   margin-bottom: 30px;
 }
