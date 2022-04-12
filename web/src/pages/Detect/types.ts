@@ -1,23 +1,31 @@
 export interface Predict {
   model: string;
   status: 'Waiting' | 'Predict' | 'Finish';
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  label: string;
   confidence: number;
-  name?: string; // 模型外显名称 传到表格中的数据务必保证
+  results: {
+    shape: 'Polygon' | 'Ract';
+    label: string;
+    confidence: number;
+    positions: [[number, number], [number, number]];
+  };
+  // name?: string; // 模型外显名称 传到表格中的数据务必保证
+}
+
+export interface ListData {
+  name: string;
+  confidence?: number;
+  status: string;
 }
 
 interface PicData {
   // eslint-disable-next-line camelcase
   create_time: number;
-  result: Predict[]; // meta data
+  result: { Any: Predict }; // meta data
 }
 
 export interface Model {
   name: string; // 模型外显名称
+  model: string;
   category: 'disease' | 'risk'; // 类别
 }
 

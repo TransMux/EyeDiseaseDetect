@@ -14,7 +14,7 @@
         <template #label>
           <t-icon name="scan" class="tabs-icon-margin" />病变特征检测
         </template>
-        <diseaseVue :disease="DiseaseMetas" />
+        <diseaseVue :models="DiseaseModels" />
       </t-tab-panel>
       <t-tab-panel :value="2">
         <template #label>
@@ -41,8 +41,8 @@ import request from '@/utils/request';
 const props = defineProps<{ update: Function }>()
 
 
-const DiseaseMetas = ref<Predict[]>([])
-const RiskMetas = ref<Predict[]>([])
+const DiseaseModels = ref<Model[]>([])
+const RiskModels = ref<Model[]>([])
 
 onMounted(() => fetchModelInfo())
 
@@ -53,6 +53,21 @@ const fetchModelInfo = async () => {
     if (res.code === 0) {
       model_info.value = res.data
       console.log("模型信息:", model_info.value);
+
+      // 对模型进行归类
+      DiseaseModels.value = []
+      RiskModels.value = []
+      for (var model in model_info.value) {
+        console.log(model);
+        if (model_info.value[model].category == "disease") {
+          DiseaseModels.value.push(model_info.value[model])
+        } else if (model_info.value[model].category == "risk") {
+          RiskModels.value.push(model_info.value[model])
+        }
+      }
+      console.log("模型归类完成:");
+      console.log("disease: ", DiseaseModels.value);
+      console.log("risk: ", RiskModels.value);
     }
   } catch (e) {
     console.log(e);
@@ -83,25 +98,6 @@ onMounted(() => {
     const url = `http://localhost:21335/api/picture/${OpeningImg.value.value}`
     console.log("<Tabs> Load url:", url);
     labeler.load(url);
-
-    // 对图片的meta.result信息进行归类
-
-    let results = OpeningImg.value.meta.result
-    DiseaseMetas.value = []
-    RiskMetas.value = []
-    for (var model in results) {
-      console.log(model);
-      results[model]["name"] = model_info.value[model].name
-      if (model_info.value[model].category == "disease") {
-        DiseaseMetas.value.push(results[model])
-      } else if (model_info.value[model].category == "risk") {
-        RiskMetas.value.push(results[model])
-      }
-    }
-    console.log("归类完成:");
-    console.log("disease: ", DiseaseMetas.value);
-    console.log("risk: ", RiskMetas.value);
-
   })
 })
 

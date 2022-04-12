@@ -102,7 +102,7 @@ if __name__ == '__main__':
         "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models")),
     }
     ModelInfo: Dict[str, Dict[str, str]] = {
-        "Yolov5s": {"name": "测试模型", "category": "disease"}
+        "Yolov5s": {"name": "测试模型", "model": "Yolov5s", "category": "disease"}
     }
 
     # 启动后台服务器

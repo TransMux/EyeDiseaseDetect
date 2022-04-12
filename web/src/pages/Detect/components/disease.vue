@@ -1,31 +1,54 @@
 <template>
   <div class="list-common-table">
     <div class="table-container">
-      <t-table :data="props.disease" :columns="COLUMNS" :row-key="rowKey" :vertical-align="verticalAlign"
-        :hover="hover">
+      <t-table :data="data" :columns="COLUMNS" :row-key="rowKey" :vertical-align="verticalAlign" :hover="hover">
         <template #status="{ row }">
           <t-tag v-if="row.status === 'Waiting'" theme="warning" variant="light"> 排队中 </t-tag>
           <t-tag v-if="row.status === 'Predict'" theme="danger" variant="light"> 预测中 </t-tag>
           <t-tag v-if="row.status === 'Finish'" theme="success" variant="light"> 已完成 </t-tag>
+          <t-tag v-if="row.status === 'Unpredicted'" theme="danger" variant="light"> 未预测 </t-tag>
+        </template>
+        <template #op="{ row }">
+          <t-button v-if="row.status === 'Unpredicted'" theme="default"> 预测 </t-button>
+          <t-button v-if="row.status === 'Finish'" theme="success"> 聚焦 </t-button>
         </template>
       </t-table>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { inject, ref, watch } from 'vue';
-import { SingleEyeImg, Predict } from '../types';
+import { inject, ref, watch, watchEffect } from 'vue';
+import { SingleEyeImg, Predict, ListData, Model } from '../types';
 
-const OpeingImg: { value: SingleEyeImg } = inject('OpeningImg');
+const OpeningImg: { value: SingleEyeImg } = inject('OpeningImg');
 
 const props = defineProps<{
-  disease: Predict[];
+  models: Model[];
 }>();
 
 console.log(props);
 
-watch(OpeingImg, () => {
-  console.log(OpeingImg);
+const data = ref<ListData[]>([]);
+
+watchEffect(() => {
+  console.log('Disease:开始映射数据');
+
+  data.value = [];
+  props.models.forEach((model) => {
+    if (model.model in OpeningImg.value.meta.result) {
+      data.value.push({
+        name: model.name,
+        confidence: OpeningImg.value.meta.result[model.model].confidence,
+        status: OpeningImg.value.meta.result[model.model].status,
+      });
+    } else {
+      data.value.push({
+        name: model.name,
+        // confidence: 0,
+        status: 'Unpredicted',
+      });
+    }
+  });
 });
 
 const COLUMNS = [
@@ -36,6 +59,7 @@ const COLUMNS = [
     align: 'left',
     colKey: 'name',
   },
+  { title: '任务状态', colKey: 'status', width: 200, cell: { col: 'status' } },
   {
     title: '预测结果',
     width: 200,
@@ -48,37 +72,12 @@ const COLUMNS = [
     ellipsis: true,
     colKey: 'confidence',
   },
-  { title: '任务状态', colKey: 'status', width: 200, cell: { col: 'status' } },
-
-  // {
-  //   title: '合同收付类型',
-  //   width: 200,
-  //   ellipsis: true,
-  //   colKey: 'paymentType',
-  // },
-  // {
-  //   title: '合同金额 (元)',
-  //   width: 200,
-  //   ellipsis: true,
-  //   colKey: 'amount',
-  // },
-  // {
-  //   align: 'left',
-  //   fixed: 'right',
-  //   width: 200,
-  //   colKey: 'op',
-  //   title: '操作',
-  // },
+  { title: '操作', colKey: 'op', width: 200, cell: { col: 'status' } },
 ];
 
 const rowKey = 'index';
 const verticalAlign = 'top';
 const hover = true;
-// const confirmVisible = ref(false);
-
-const data = ref([]);
-
-const dataLoading = ref(false);
 </script>
 
 <style lang="less">

@@ -3,25 +3,31 @@ from pathlib import Path
 from typing import List
 
 
-def predict_result_template(
-        model=None,
-        status=None,
-        x1=None,
-        y1=None,
-        x2=None,
-        y2=None,
+def label_template(
+        shape=None,
+        positions: List = None,
         label=None,
         confidence=None
 ):
     return {
-        "model": model,
-        "status": status,
-        "x1": x1,
-        "y1": y1,
-        "x2": x2,
-        "y2": y2,
+        "shape": shape,
+        "positions": positions,
         "label": label,
         "confidence": confidence
+    }
+
+
+def predict_result_template(
+        model=None,
+        status=None,
+        results: List = None,
+        overall_confident=None,
+):
+    return {
+        "model": model,
+        "status": status,
+        "results": results,
+        "overall_confident": overall_confident
     }
 
 
