@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="controls">
+      <t-button theme="default" variant="outline" @click="props.update"> 刷新数据 </t-button>
       <t-button theme="default" variant="outline" @click="LabelerResize"> 重置图片 </t-button>
     </div>
 
@@ -37,6 +38,8 @@ import request from '@/utils/request';
 // const { Shape } = LabelImg;
 //  加载模型信息
 
+const props = defineProps<{ update: Function }>()
+
 
 const DiseaseMetas = ref<Predict[]>([])
 const RiskMetas = ref<Predict[]>([])
@@ -70,22 +73,25 @@ onMounted(() => {
     height: 600,
     bgColor: `#000`, // 背景色
     //@ts-ignore
-    imagePlacement: 'center', // default | center
+    imagePlacement: 'default', // default | center
   });
 
   // 加载图片
   watch(OpeningImg, () => {
+    console.log(OpeningImg.value);
+
     const url = `http://localhost:21335/api/picture/${OpeningImg.value.value}`
     console.log("<Tabs> Load url:", url);
     labeler.load(url);
 
     // 对图片的meta.result信息进行归类
+
     let results = OpeningImg.value.meta.result
     DiseaseMetas.value = []
     RiskMetas.value = []
     for (var model in results) {
       console.log(model);
-      results[model]["category"] = model_info.value[model].category
+      results[model]["name"] = model_info.value[model].name
       if (model_info.value[model].category == "disease") {
         DiseaseMetas.value.push(results[model])
       } else if (model_info.value[model].category == "risk") {
@@ -143,10 +149,5 @@ const value = ref(1);
   left: 25%;
   margin: auto;
   margin-top: 20px;
-}
-
-.controls>button {
-  margin: auto;
-  display: block;
 }
 </style>

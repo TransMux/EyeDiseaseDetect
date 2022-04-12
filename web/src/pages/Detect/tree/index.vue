@@ -10,7 +10,7 @@
         <t-tree :data="TREE_DATA" activable hover expand-on-click-node empty="正在加载数据..." @click="handleTreeActive" />
       </div>
       <div class="list-tree-content">
-        <Tabs />
+        <Tabs :update="fetchData" />
       </div>
     </div>
   </div>
@@ -48,7 +48,7 @@ interface ResDataType {
 const fetchData = async () => {
   dataLoading.value = true;
   try {
-    const res: ResDataType = await request.get('/api/tree/list');
+    const res: ResDataType = await request.get('/api/tree/update');
     if (res.code === 0) {
       TREE_DATA.value = res.data;
     }
