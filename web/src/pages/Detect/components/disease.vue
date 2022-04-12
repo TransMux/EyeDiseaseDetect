@@ -13,7 +13,7 @@
         </template>
         <template #op="{ row }">
           <t-button v-if="row.status === 'Unpredicted'" theme="default" @click="requestPredict(row)"> 预测 </t-button>
-          <t-button v-if="row.status === 'Finish'" theme="success"> 聚焦 </t-button>
+          <t-button v-if="row.status === 'Finish'" theme="success" @click="focus(row)"> 聚焦 </t-button>
         </template>
       </t-table>
     </div>
@@ -66,6 +66,7 @@ watchEffect(() => {
         confidence: OpeningImg.value.meta.result[model.model].confidence,
         status: OpeningImg.value.meta.result[model.model].status,
         path: OpeningImg.value.value,
+        results: OpeningImg.value.meta.result[model.model].results,
       });
     } else {
       data.value.push({
@@ -106,6 +107,8 @@ const COLUMNS = [
 const rowKey = 'index';
 const verticalAlign = 'top';
 const hover = true;
+
+const focus = inject('focus');
 </script>
 
 <style lang="less">

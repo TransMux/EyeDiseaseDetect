@@ -28,10 +28,10 @@
 
 <script setup lang="ts">
 import { inject, onMounted, provide, ref, watch, watchEffect } from 'vue';
-import LabelImg from 'label-img';
+import LabelImg, { Shape } from 'label-img';
 import riskVue from './risk.vue';
 import diseaseVue from './disease.vue';
-import { SingleEyeImg, Predict, Model } from '../types';
+import { SingleEyeImg, Predict, Model, ListData } from '../types';
 import { ResDataType } from '@/interface';
 import request from '@/utils/request';
 
@@ -104,6 +104,44 @@ onMounted(() => {
 function LabelerResize() {
   labeler.resize()
 }
+
+
+function focus(row: ListData) {
+  console.log('Focus', row);
+  row.results!.forEach((label) => {
+    console.log(label);
+    let shapeOptions = {
+      type: label.shape, // 图形类型 必填 Polygon | Ract
+      positions: label.positions, // 坐标集合 ex: [[0, 0], [100, 100]]
+      tag: `${label.label}:${label.confidence}`, // 展示在图形上的说明标签
+      showTag: true, // 是否展示标签
+      // closed, // 是否闭合
+      // visible, // 是否可见
+      // active, // 是否被选中
+      // disabled, // 是否禁用
+      /**
+       * { normal, active, disabled }
+       * {
+       *  normal: {
+       *    dotColor: "red", // 坐标点颜色
+       *    dotRadius: 3, // 坐标点大小
+       *    lineColor: "#c30", // 连线颜色
+       *    lineWidth: 2, // 连线宽度
+       *    fillColor: "pink", // 填充色
+       *  }
+       * }
+       */
+      // style, // 图形样式
+    }
+    // @ts-ignore
+    const shape = new Shape(shapeOptions)
+
+    // 添加到画布中
+    labeler.addShape(shape)
+  })
+}
+
+provide('focus', focus);
 
 
 // // 注册图形

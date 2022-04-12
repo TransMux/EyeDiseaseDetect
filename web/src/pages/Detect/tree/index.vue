@@ -20,7 +20,7 @@ import { provide, onMounted, ref } from 'vue';
 import { SearchIcon } from 'tdesign-icons-vue-next';
 import Tabs from '../components/tabs.vue';
 import request from '@/utils/request';
-import { SingleEyeImg } from '../types';
+import { ListData, SingleEyeImg } from '../types';
 
 const OpeningImg = ref<SingleEyeImg>(null);
 provide('OpeningImg', OpeningImg);

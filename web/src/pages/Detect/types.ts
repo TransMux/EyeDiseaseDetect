@@ -7,7 +7,7 @@ export interface Predict {
     label: string;
     confidence: number;
     positions: [[number, number], [number, number]];
-  };
+  }[];
   // name?: string; // 模型外显名称 传到表格中的数据务必保证
 }
 
@@ -17,6 +17,12 @@ export interface ListData {
   confidence?: number;
   status: string;
   path: string;
+  results?: {
+    shape: 'Polygon' | 'Ract';
+    label: string;
+    confidence: number;
+    positions: [[number, number], [number, number]];
+  }[];
 }
 
 interface PicData {
