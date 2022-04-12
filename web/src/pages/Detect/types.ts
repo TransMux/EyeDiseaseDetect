@@ -13,8 +13,10 @@ export interface Predict {
 
 export interface ListData {
   name: string;
+  model: string;
   confidence?: number;
   status: string;
+  path: string;
 }
 
 interface PicData {

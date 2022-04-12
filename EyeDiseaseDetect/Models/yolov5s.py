@@ -44,7 +44,7 @@ class Yolov5s(BaseModel):
                 predict_result_template(
                     status="Finish",
                     results=labels,
-                    confidence=overall_confident
+                    overall_confident=overall_confident
                 )
             )
         return result.xyxyn
