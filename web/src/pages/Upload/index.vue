@@ -1,6 +1,6 @@
 <template>
   <div class="t-upload__file-flow-demo">
-    <t-upload v-model="files" action="http://127.0.0.1:21335/api/upload" placeholder="只能上传图片文件，支持批量上传文件，支持拖拽上传"
+    <t-upload v-model="files" action="http://43.138.152.86:21335/api/upload" placeholder="只能上传图片文件，支持批量上传文件，支持拖拽上传"
       theme="file-flow" multiple :use-mock-progress="false" :auto-upload="false" draggable :fail="onUploadFail"
       :max="100">
     </t-upload>
