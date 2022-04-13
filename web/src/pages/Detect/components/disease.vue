@@ -108,7 +108,7 @@ const rowKey = 'index';
 const verticalAlign = 'top';
 const hover = true;
 
-const focus = inject('focus');
+const focus = inject<CallableFunction>('focus');
 </script>
 
 <style lang="less">
