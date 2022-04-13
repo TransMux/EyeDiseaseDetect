@@ -17,7 +17,7 @@ class Yolov5s(BaseModel):
         change_status(data_paths, self.__class__.__name__, "Predict")
         result = self.model(data_paths)
         names = result.names
-        cors = result.xyxyn
+        cors = [list(i) for i in result.xyxyn]
         # TODO: 这里只能是临时展示 batch * count * result
         # 1 * 1 * 6 需要把前面两个1 flatten 一下
         labels = []
@@ -42,7 +42,10 @@ class Yolov5s(BaseModel):
                         label=names[int(label[5])]
                     )
                 )
-            overall_confident = overall_confident / len(batch)
+            try:
+                overall_confident = overall_confident / len(batch)
+            except ZeroDivisionError:
+                overall_confident = 0
             update_meta(
                 data_paths[i],
                 self.__class__.__name__,

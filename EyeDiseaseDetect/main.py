@@ -1,10 +1,12 @@
 import json
+import os
 from pathlib import Path
 from typing import Dict
 
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from flask_cors import CORS
 from service_streamer import ThreadedStreamer
+from werkzeug.utils import secure_filename
 
 from EyeDiseaseDetect.Models.ModelConstructor import ConstructModelPipe
 from EyeDiseaseDetect.Models.utils import change_status
@@ -96,6 +98,21 @@ def submit(path, model):
         return internal_error(e.__repr__())
 
 
+@app.route('/api/upload', methods=['GET', 'POST'])
+def uploader():
+    f = request.files['file']
+    print(request.files)
+    if f.filename.rsplit(".", 1)[-1] in ["png", "jpg"]:
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
+        return code_0("文件成功上传")
+    else:
+        return {
+            "code": 405,
+            "data": None,
+            "error": f"拓展名{f.filename.rsplit('.', 1)[-1]}似乎不是图片类型哦",
+        }
+
+
 if __name__ == '__main__':
     data_path = Path(r"E:\competition\EyeDiseaseDetect\data")
     Tree = search_assets_structure(data_path / "assets", data_path / "assets")
@@ -106,6 +123,6 @@ if __name__ == '__main__':
     ModelInfo: Dict[str, Dict[str, str]] = {
         "Yolov5s": {"name": "测试模型", "model": "Yolov5s", "category": "disease"}
     }
-
+    app.config['UPLOAD_FOLDER'] = str(data_path / "assets")
     # 启动后台服务器
     app.run(port=21335)

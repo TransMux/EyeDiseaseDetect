@@ -118,7 +118,7 @@ function focus(row: ListData) {
       closed: true, // 是否闭合
       // visible, // 是否可见
       active: false, // 是否被选中
-      // disabled, // 是否禁用
+      disabled: true, // 是否禁用
       /**
        * { normal, active, disabled }
        * {
