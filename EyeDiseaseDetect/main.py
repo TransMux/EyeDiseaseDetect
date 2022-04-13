@@ -77,6 +77,8 @@ def submit(path, model):
             return NotAllowed(f"{path} -> {model}模型已在队列中:{meta['result'][model]['status']}")
     except KeyError:
         pass
+    except Exception as e:
+        return internal_error(e.__repr__())
     finally:
         del meta  # 释放内存
 
