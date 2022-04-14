@@ -95,7 +95,7 @@ onMounted(() => {
   watch(OpeningImg, () => {
     console.log(OpeningImg.value);
 
-    const url = `http://localhost:21335/api/picture/${OpeningImg.value.value}`
+    const url = `http://43.138.152.86:21335/api/picture/${OpeningImg.value.value}`
     console.log("<Tabs> Load url:", url);
     labeler.load(url);
   })
