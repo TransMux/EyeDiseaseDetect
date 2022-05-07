@@ -1,5 +1,8 @@
 import json
 import os
+import sys
+
+sys.path.append("..")
 from pathlib import Path
 from typing import Dict
 
