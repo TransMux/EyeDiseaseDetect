@@ -3,16 +3,17 @@ import STYLE_CONFIG from '@/config/style';
 export interface ResDataType {
   code: number;
   data: any;
+  msg: string;
 }
 
 export interface MenuRoute {
   path: string;
   title?: string;
   icon?:
-    | string
-    | {
-        render: () => void;
-      };
+  | string
+  | {
+    render: () => void;
+  };
   redirect?: string;
   children: MenuRoute[];
   meta: any;

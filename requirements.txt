@@ -1,0 +1,12 @@
+flask
+flask_cors
+torch
+service_streamer
+pillow
+werkzeug
+matplotlib
+seaborn
+torchvision
+numpy
+opencv-python
+requests>=2.23.0
