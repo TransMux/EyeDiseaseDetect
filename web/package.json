@@ -20,6 +20,7 @@
     "@braks/vue-flow": "^0.4.8",
     "@vueuse/core": "^8.4.2",
     "cz-conventional-changelog": "^3.3.0",
+    "dagre": "^0.8.5",
     "dayjs": "^1.10.6",
     "echarts": "~5.1.2",
     "hex-to-hsl": "^1.0.2",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
+    "@types/dagre": "^0.7.47",
     "@types/echarts": "^4.9.10",
     "@types/ws": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
