@@ -18,8 +18,8 @@
 <script setup lang="ts">
 import { provide, onMounted, ref } from 'vue';
 import { SearchIcon } from 'tdesign-icons-vue-next';
-// import FlowChart from './FlowChart.vue';
-import FlowChart from './Basic.vue';
+import FlowChart from './FlowChart.vue';
+// import FlowChart from './Basic.vue';
 import request from '@/utils/request';
 import { ListData, SingleEyeImg } from '../types';
 

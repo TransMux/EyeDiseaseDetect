@@ -54,3 +54,10 @@ watch(rootIsHovering, () => {
     </div>
   </VueFlow>
 </template>
+
+
+<style>
+.vue-flow {
+  height: 100vh;
+}
+</style>

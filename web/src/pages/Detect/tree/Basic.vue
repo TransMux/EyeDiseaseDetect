@@ -51,9 +51,7 @@ const toggleclass = () => elements.value.forEach((el) => (el.class = el.class ==
 </template>
 
 <style>
-
 .vue-flow {
   height: 100vh;
 }
-
 </style>
