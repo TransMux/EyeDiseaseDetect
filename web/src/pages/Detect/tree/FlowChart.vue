@@ -30,6 +30,7 @@ const elements = ref<Elements>([
 const {
   nodesDraggable,
   zoomOnScroll,
+  instance,
 } = useVueFlow({
   modelValue: elements,
 })
@@ -52,7 +53,7 @@ const onLayout = (direction: string) => {
   elements.value.forEach((el) => {
     if (isNode(el)) {
       const nodeWithPosition = dagreGraph.node(el.id)
-      if (el.type === "root"){
+      if (el.type === "root") {
         nodeWithPosition.x -= 250
         nodeWithPosition.y -= 180
       }
@@ -61,6 +62,8 @@ const onLayout = (direction: string) => {
       el.position = {x: nodeWithPosition.x, y: nodeWithPosition.y}
     }
   })
+  // 居中
+  instance.value?.fitView()
 }
 
 // Disable drag and zoom on hovering root node
