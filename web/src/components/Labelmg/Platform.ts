@@ -106,6 +106,7 @@ export class Platform extends EventReceiver {
     this.render();
     this._init();
   }
+
   public options = () => {
     return Object.assign({}, this._options);
   };
@@ -128,8 +129,8 @@ export class Platform extends EventReceiver {
     if (!this.Image || !this.Image.el) return;
     this._scale = getAdaptImgScale(this.Image.el, this.options());
     if (this.options().imagePlacement === ImagePlacement.center) {
-      const { width: cw, height: ch } = this.canvas.el();
-      const { width: iw, height: ih } = this.Image.el;
+      const {width: cw, height: ch} = this.canvas.el();
+      const {width: iw, height: ih} = this.Image.el;
       this.Image.moveTo([(cw - iw) / 2, (ch - ih) / 2]);
     } else {
       this.Image.moveTo([0, 0]);
@@ -177,8 +178,8 @@ export class Platform extends EventReceiver {
           let currentTarget: null | Image | Shape = isOnShape
             ? shape
             : isOnImage
-            ? Image
-            : null;
+              ? Image
+              : null;
           const currentDotIndex = dotIndex;
           position = offset;
           const ante = {
@@ -218,14 +219,14 @@ export class Platform extends EventReceiver {
             isTarget?: boolean
           ) => {
             let len = eventList.length;
-            const { isPropagation, currentTarget } = ante;
+            const {isPropagation, currentTarget} = ante;
             while (len) {
               if (!isPropagation) {
                 len = 0;
                 break;
               }
               const event = eventList[len - 1];
-              const { callback, ...other } = event;
+              const {callback, ...other} = event;
               if (!isTarget) {
                 callback(ev, other);
               } else if (currentTarget === shape) {
@@ -260,10 +261,10 @@ export class Platform extends EventReceiver {
     };
     // 初始化鼠标手势
     const _initCursor = () => {
-      this.on("mousemove", ({ ante }) => {
+      this.on("mousemove", ({ante}) => {
         position = ante.offset;
         if (!this.Image || this._isMouseDown) return;
-        const { isOnShape, isOnArc } = ante;
+        const {isOnShape, isOnArc} = ante;
         if (this.drawing) {
           // 当前正在标注
           this.cursor("label");
@@ -293,14 +294,14 @@ export class Platform extends EventReceiver {
       let start = [0, 0]; // 点击在图片的起始位置
       const Image = this.Image;
       this.on("mousedown", lv, (e) => {
-        const { offset, isOnShape } = e.ante;
+        const {offset, isOnShape} = e.ante;
         if (isOnShape || !Image.complate) return;
         const [sx, sy] = offset; // start x, start y
         const [x, y] = Image.getOrigin(); // image origin
         start = [sx - x, sy - y];
       });
       this.on("mousemove", lv, (e) => {
-        const { offset, isOnShape } = e.ante;
+        const {offset, isOnShape} = e.ante;
         if (!this._isMouseDown || this._isShapeMoving) return;
         if (isOnShape) return;
         if (this.drawing) return;
@@ -327,7 +328,7 @@ export class Platform extends EventReceiver {
       Image.on("wheel", (e) => {
         const Image = this.Image;
         if (!Image.el) return;
-        const { offset } = e.ante;
+        const {offset} = e.ante;
         const direction = e.deltaY < 0 ? 1 : -1;
         this.scale(direction, offset);
       });
@@ -338,7 +339,7 @@ export class Platform extends EventReceiver {
       let start: Point = [0, 0];
       const Image = this.Image;
       this.on("mousedown", lv, (e) => {
-        const { offset, isOnImage } = e.ante;
+        const {offset, isOnImage} = e.ante;
         if (!this.drawing || !Image.el) return;
         // 判断当前点击是否在 img 上
         if (!isOnImage) return;
@@ -394,13 +395,13 @@ export class Platform extends EventReceiver {
       this.on("mousemove", lv, (e) => {
         const cache = this.cache;
         if (!this.drawing || !Image.complate || !cache) return;
-        const { offset } = e.ante;
+        const {offset} = e.ante;
 
         this._isShapeMoving = true;
         const shapeType = this.drawing.type;
 
         if (shapeType === ShapeType.Rect) {
-          const { offset } = e.ante;
+          const {offset} = e.ante;
           const end = Image.toImagePoint(offset, this._scale);
           const positions: Points = getRectPoints(start, end);
           cache.updatePositions(positions);
@@ -434,7 +435,8 @@ export class Platform extends EventReceiver {
           this.render();
         }
       });
-      this.on("mouseout", lv, () => {});
+      this.on("mouseout", lv, () => {
+      });
     };
     // 初始化图形事件
     const _initShapeEvent = () => {
@@ -490,8 +492,8 @@ export class Platform extends EventReceiver {
         // }
       });
       this.on("mousemove", lv, (e) => {
-        const { offsetX, offsetY, ante } = e;
-        const { isOnShape } = ante;
+        const {offsetX, offsetY, ante} = e;
+        const {isOnShape} = ante;
 
         if (
           !isOnShape ||
@@ -682,7 +684,7 @@ export class Platform extends EventReceiver {
     const labelMaps = this.shapeRegister.getMap();
     return Object.keys(labelMaps).map((key) => {
       const label = labelMaps[key];
-      const { tag, type } = label;
+      const {tag, type} = label;
       return {
         key,
         name: tag || key,
@@ -974,7 +976,7 @@ export class Platform extends EventReceiver {
     this.emitter.emit("afterClear");
   };
   private _renderBackground = () => {
-    const { bgColor, width, height } = this.options();
+    const {bgColor, width, height} = this.options();
     this.emitter.emit("beforeRenderBackground");
     this.canvas.fillReact([0, 0], [width, height], {
       fillColor: bgColor,
@@ -1026,10 +1028,10 @@ export class Platform extends EventReceiver {
       return;
     }
     const scale = this._scale;
-    const { positions } = shape;
+    const {positions} = shape;
     const style = shape.getStyle();
 
-    const { dotColor, dotRadius, lineColor, lineWidth, fillColor } = style;
+    const {dotColor, dotRadius, lineColor, lineWidth, fillColor, opacity = 0.7} = style;
 
     const points = Image.getShape2CanvasPoints(positions, scale);
 
@@ -1046,7 +1048,7 @@ export class Platform extends EventReceiver {
       dotRadius: dotRadius * styleScale,
       dotColor,
       fillColor,
-      opacity: 0.7,
+      opacity,
     };
     if (shape.isClose()) {
       this.canvas.polygon(points, shapeStyle);
