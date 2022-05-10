@@ -17,6 +17,8 @@
     "test": "echo \"no test specified,work in process\""
   },
   "dependencies": {
+    "@braks/vue-flow": "^0.4.8",
+    "@vueuse/core": "^8.4.2",
     "cz-conventional-changelog": "^3.3.0",
     "dayjs": "^1.10.6",
     "echarts": "~5.1.2",

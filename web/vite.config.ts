@@ -37,4 +37,7 @@ export default defineConfig({
       '/api': 'http://127.0.0.1:3000/',
     },
   },
+  optimizeDeps: {
+    include: ['@braks/vue-flow'],
+  },
 });

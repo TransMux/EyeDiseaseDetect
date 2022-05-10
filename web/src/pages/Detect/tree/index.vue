@@ -4,13 +4,13 @@
       <div class="list-tree-operator">
         <t-input v-model="filterText" clearable placeholder="请输入关键词" @change="onInput">
           <template #prefix-icon>
-            <search-icon size="20px" />
+            <search-icon size="20px"/>
           </template>
         </t-input>
-        <t-tree :data="TREE_DATA" activable hover expand-on-click-node empty="正在加载数据..." @click="handleTreeActive" />
+        <t-tree :data="TREE_DATA" activable hover expand-on-click-node empty="正在加载数据..." @click="handleTreeActive"/>
       </div>
       <div class="list-tree-content">
-        <Tabs :update="fetchData" />
+        <FlowChart />
       </div>
     </div>
   </div>
@@ -18,14 +18,15 @@
 <script setup lang="ts">
 import { provide, onMounted, ref } from 'vue';
 import { SearchIcon } from 'tdesign-icons-vue-next';
-import Tabs from '../components/tabs.vue';
+// import FlowChart from './FlowChart.vue';
+import FlowChart from './Basic.vue';
 import request from '@/utils/request';
 import { ListData, SingleEyeImg } from '../types';
 
 const OpeningImg = ref<SingleEyeImg>(null);
 provide('OpeningImg', OpeningImg);
 
-function handleTreeActive({ node }: { node: { data: SingleEyeImg } }) {
+function handleTreeActive({node}: { node: { data: SingleEyeImg } }) {
   if (!node.data.children) {
     console.log('is img');
     OpeningImg.value = node.data;
