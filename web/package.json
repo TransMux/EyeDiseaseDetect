@@ -25,6 +25,7 @@
     "echarts": "~5.1.2",
     "hex-to-hsl": "^1.0.2",
     "label-img": "^0.0.72",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.11",
     "qrcode.vue": "^3.2.2",

@@ -2,7 +2,7 @@
 import dagre from 'dagre'
 import { VueFlow, MiniMap, Controls, useVueFlow, isNode, Elements } from '@braks/vue-flow'
 import { useElementHover } from "@vueuse/core";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import ImageLabelNode from "./imgLable.vue"
 import { Handle, Position } from '@braks/vue-flow'
 
@@ -64,6 +64,7 @@ const onLayout = (direction: string) => {
   })
   // 居中
   instance.value?.fitView()
+  // setTimeout(() => instance.value?.fitView(), 1)
 }
 
 // Disable drag and zoom on hovering root node
@@ -108,6 +109,6 @@ watch(rootIsHovering, () => {
 
 <style>
 .vue-flow {
-  height: 100vh;
+  height: 80vh;
 }
 </style>
