@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { SingleEyeImg } from "@/pages/Detect/types";
+import { Handle, Position } from '@braks/vue-flow'
 import LabelImg from "label-img";
 import { inject, onMounted, ref, watch, watchEffect } from "vue";
 
@@ -9,8 +10,8 @@ onMounted(() => {
   // @ts-ignore
   // labelImgDiv = document.getElementById("target")
   const labeler = new LabelImg(targetDiv.value, {
-    width: 600,
-    height: 600,
+    width: 400,
+    height: 400,
     bgColor: `#000`, // 背景色
   });
 // 加载图片

@@ -3,6 +3,7 @@ import { VueFlow, MiniMap, Controls, useVueFlow } from '@braks/vue-flow'
 import { useElementHover } from "@vueuse/core";
 import { ref, watch } from "vue";
 import ImageLabelNode from "./imgLable.vue"
+import { Handle, Position } from '@braks/vue-flow'
 
 // init Vue flow
 const {
@@ -10,7 +11,13 @@ const {
   zoomOnScroll,
 } = useVueFlow({
   modelValue: [
-    {id: '1', type: 'root', label: 'Node 1', position: {x: 250, y: 5}},
+    {
+      id: '1',
+      type: 'root',
+      label: 'Node 1',
+      style: {border: '1px solid #0163f7', padding: '5px', borderRadius: "5px"},
+      position: {x: 250, y: 5}
+    },
     {id: '2', label: 'Node 2', position: {x: 100, y: 100}},
     {id: '3', label: 'Node 3', position: {x: 400, y: 100}},
     {id: '4', label: 'Node 4', position: {x: 400, y: 200}},
@@ -36,6 +43,7 @@ watch(rootIsHovering, () => {
     <MiniMap/>
     <Controls/>
     <template #node-root>
+      <Handle id="a" type="source" :position="Position.Right"/>
       <ImageLabelNode ref="RootNode"/>
     </template>
     <div :style="{ position: 'absolute', left: 10, top: 10, zIndex: 4 }">
