@@ -2,7 +2,7 @@
 import dagre from 'dagre'
 import { VueFlow, MiniMap, Controls, useVueFlow, isNode, Elements } from '@braks/vue-flow'
 import { useElementHover } from "@vueuse/core";
-import { onMounted, ref, watch } from "vue";
+import { inject, onMounted, ref, watch } from "vue";
 import ImageLabelNode from "./imgLable.vue"
 import { Handle, Position } from '@braks/vue-flow'
 
@@ -31,9 +31,18 @@ const {
   nodesDraggable,
   zoomOnScroll,
   instance,
+  addNodes,
+  addEdges,
+  getNodes,
+  getEdges
 } = useVueFlow({
   modelValue: elements,
 })
+
+inject("addNodes", addNodes)
+inject("addEdges", addEdges)
+inject("getNodes", getNodes)
+inject("getEdges", getEdges)
 
 // utils
 const onLayout = (direction: string) => {
