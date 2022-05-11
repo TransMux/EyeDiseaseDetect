@@ -2,7 +2,7 @@
 import dagre from 'dagre'
 import { VueFlow, MiniMap, Controls, useVueFlow, isNode, Elements } from '@braks/vue-flow'
 import { useElementHover } from "@vueuse/core";
-import { inject, onMounted, ref, watch } from "vue";
+import { provide, ref, watch } from "vue";
 import ImageLabelNode from "./imgLable.vue"
 import { Handle, Position } from '@braks/vue-flow'
 
@@ -13,7 +13,7 @@ dagreGraph.setDefaultEdgeLabel(() => ({}))
 // elements
 const elements = ref<Elements>([
   {
-    id: '1',
+    id: 'root',
     type: 'root',
     label: 'Node 1',
     style: {border: '1px solid #0163f7', padding: '5px', borderRadius: "5px"},
@@ -21,8 +21,8 @@ const elements = ref<Elements>([
   },
   {id: '2', label: 'Node 2', position: {x: 100, y: 100}},
   {id: '3', label: 'Node 3', position: {x: 400, y: 100}},
-  {id: 'e1-2', source: '1', target: '2', animated: true},
-  {id: 'e1-3', source: '1', target: '3'},
+  {id: 'e1-2', source: 'root', target: '2', animated: true},
+  {id: 'e1-3', source: 'root', target: '3'},
 ])
 
 
@@ -39,10 +39,10 @@ const {
   modelValue: elements,
 })
 
-inject("addNodes", addNodes)
-inject("addEdges", addEdges)
-inject("getNodes", getNodes)
-inject("getEdges", getEdges)
+provide("addNodes", addNodes)
+provide("addEdges", addEdges)
+provide("getNodes", getNodes)
+provide("getEdges", getEdges)
 
 // utils
 const onLayout = (direction: string) => {
@@ -50,6 +50,7 @@ const onLayout = (direction: string) => {
   dagreGraph.setGraph({rankdir: direction})
 
   elements.value.forEach((el) => {
+    console.log(el)
     if (isNode(el)) {
       dagreGraph.setNode(el.id, {width: 150, height: 50})
     } else {
@@ -83,6 +84,8 @@ watch(rootIsHovering, () => {
   nodesDraggable.value = !rootIsHovering.value
   zoomOnScroll.value = !rootIsHovering.value
 })
+
+provide("onLayout", onLayout)
 
 </script>
 

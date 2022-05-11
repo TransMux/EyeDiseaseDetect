@@ -1,10 +1,17 @@
 <script lang="ts" setup>
 import { Shape } from "@/components/Labelmg/Shape";
 import { SingleEyeImg } from "@/pages/Detect/types";
-import { Handle, Position } from '@braks/vue-flow'
-// import LabelImg from "label-img";
+import { AddNodes, AddEdges, Handle, Position } from '@braks/vue-flow'
 import LabelImg from "@/components/Labelmg/main";
-import { computed, inject, onMounted, ref, watch, watchEffect } from "vue";
+import { computed, inject, markRaw, onMounted, provide, ref, watch, watchEffect } from "vue";
+import StaticImg from "./StaticImg.vue"
+// injections
+const addNodes: AddNodes = inject("addNodes")
+const addEdges: AddEdges = inject("addEdges")
+const getNodes = inject("getNodes")
+const getEdges = inject("getEdges")
+const onLayout = inject("onLayout")
+
 
 const targetDiv = ref()
 let labeler: LabelImg;
@@ -40,14 +47,35 @@ onMounted(() => {
   })
   // 添加辅助线
   labeler?.setGuideLine()
-
+  // 创建标注框时
   labeler.emitter.on("create", () => {
     const shapeList = labeler.getShapeList()
     const count = shapeList.length
     const shape: Shape = shapeList[count - 1]
     console.log("Create", shape)
     shape.disabled()
-    shape.setTag(`${shape.tagContent} ${count}`)
+    const newTag = `${shape.tagContent} ${count}`
+    shape.setTag(newTag)
+
+    // 添加节点和边
+    addNodes([
+        {
+          id: newTag,
+          position: {x: 150, y: 50},
+          label: 'Node 2',
+          template: markRaw(StaticImg),
+        }
+      ]
+    )
+    addEdges([
+      {
+        id: 'e' + newTag,
+        animated: true,
+        source: 'root',
+        target: newTag,
+      }
+    ])
+    // onLayout("LR")
   })
 })
 const OpeningImg: { value: SingleEyeImg } = inject('OpeningImg');
