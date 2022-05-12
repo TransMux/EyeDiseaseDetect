@@ -8,5 +8,9 @@ matplotlib
 seaborn
 torchvision
 numpy
+keras
+tensorflow
+scipy
+scikit-image
 opencv-python
 requests>=2.23.0

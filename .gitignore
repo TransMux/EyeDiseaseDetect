@@ -1,1 +1,6 @@
 /demo.py
+/EyeDiseaseDetect/Models/Glaucoma/pre_model/pre_model_disc.h5
+/EyeDiseaseDetect/Models/Glaucoma/pre_model/pre_model_DiscSeg.h5
+/EyeDiseaseDetect/Models/Glaucoma/pre_model/pre_model_flat.h5
+/EyeDiseaseDetect/Models/Glaucoma/pre_model/pre_model_img.h5
+/EyeDiseaseDetect/Models/Glaucoma/pre_model/pre_model_ROI.h5

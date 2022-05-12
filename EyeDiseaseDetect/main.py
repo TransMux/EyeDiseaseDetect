@@ -2,6 +2,8 @@ import json
 import os
 import sys
 
+from EyeDiseaseDetect.Models.Glaucoma.Demo_DENet_GlaucomaScreen import Glaucoma
+
 sys.path.append("..")
 from pathlib import Path
 from typing import Dict
@@ -122,9 +124,11 @@ if __name__ == '__main__':
     print(Tree)
     StreamerMap: Dict[str, ThreadedStreamer] = {
         "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models")),
+        "Glaucoma": ConstructModelPipe(Glaucoma())
     }
     ModelInfo: Dict[str, Dict[str, str]] = {
-        "Yolov5s": {"name": "测试模型", "model": "Yolov5s", "category": "disease"}
+        "Yolov5s": {"name": "Yolov5s", "model": "Yolov5s", "category": "disease"},
+        "Glaucoma": {"name": "DENet", "model": "DENet", "category": "disease"}
     }
     app.config['UPLOAD_FOLDER'] = str(data_path / "assets")
     # 启动后台服务器
