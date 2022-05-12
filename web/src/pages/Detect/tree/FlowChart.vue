@@ -15,7 +15,6 @@ const elements = ref<Elements>([
   {
     id: 'root',
     type: 'root',
-    label: 'Node 1',
     style: {border: '1px solid #0163f7', padding: '5px', borderRadius: "5px"},
     position: {x: 250, y: 5}
   },

@@ -1,17 +1,10 @@
-import json
 import os
-import sys
+from pathlib import Path
 from typing import Sequence
 
 from PIL import Image
-
-sys.path.append("..")
-from pathlib import Path
-# from typing import Dict
-
 from flask import Flask, send_from_directory, request
 from flask_cors import CORS
-# from service_streamer import ThreadedStreamer
 from werkzeug.utils import secure_filename
 
 # from EyeDiseaseDetect.Models.ModelConstructor import ConstructModelPipe
@@ -19,20 +12,16 @@ from werkzeug.utils import secure_filename
 # from EyeDiseaseDetect.Models.yolov5s import Yolov5s
 from EyeDiseaseDetect.Responses import code_0, internal_error
 from EyeDiseaseDetect.utils import search_assets_structure
+from EyeNew.FileScan import get_meta_info
 
 app = Flask(__name__)
 cors = CORS(app, supports_credentials=True)
 
 # 异步预测
 Running_Tasks = []
-
-
-# 每次添加模型都必须在这里配置！
-
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
+HOME = Path(r"E:\competition\EyeDiseaseDetect\data")
+ASSETS = HOME / "assets"
+Tree = search_assets_structure(ASSETS, ASSETS)
 
 
 @app.route("/api/tree/list")
@@ -45,42 +34,38 @@ def get_tree_data():
 @app.route("/api/tree/update")
 def resync():
     global Tree
-    Tree = search_assets_structure(data_path / "assets", data_path / "assets")
+    Tree = search_assets_structure(ASSETS, ASSETS)
     return code_0(Tree)
 
 
 @app.route("/api/picture/<path:path>")
-def send_report(path):
-    return send_from_directory(str(data_path / "assets"), path)
+def send_pic(path):
+    return send_from_directory(ASSETS, path)
 
 
 @app.route("/api/meta/<path:path>")
 def get_meta(path):
-    try:
-        with (data_path / "assets" / path).with_suffix(".json").open("r") as f:
-            meta = json.load(f)
-        return code_0(meta)
-    except FileNotFoundError:
-        return internal_error(f"不存在 {path} 对应的meta文件，请考虑Update Tree List")
-    except Exception as e:
-        return internal_error(e.__repr__())
+    return get_meta_info(path, ASSETS)
 
 
 @app.route("/api/crop/<path:path>")
 def add_new_crop(path):
-    pos: Sequence[int, int] = request.args.get("positions")
-    name: str = request.args.get("name")
-    file_name = name.split("/")[-1]
+    pos: Sequence[Sequence[int]] = request.args.get("positions")
+    label: str = request.args.get("label")
 
-    img_path = data_path / "assets" / path
-    save_folder = img_path / file_name + ".crop"
-    save_path = save_folder / name + ".jpg"
+    img_path = ASSETS / path
+    save_folder = img_path.with_suffix(".crop")
+    positions = [str(pos[0][0]),
+                 str(pos[0][1]),
+                 str(pos[2][0]),
+                 str(pos[2][1])]
+    save_path = save_folder / f"血管瘤_{label}_原图_{'_'.join(positions)}.jpg"
 
     img = Image.open(img_path)
     print("裁剪：", img.size)
     cropped = img.crop((*pos[0], *pos[2]))
     cropped.save(save_path)
-    return save_path.relative_to(data_path / "assets")
+    return save_path.relative_to(ASSETS)
 
 
 # @app.route("/api/models/list")
@@ -137,15 +122,5 @@ def uploader():
 
 
 if __name__ == '__main__':
-    data_path = Path(r"E:\competition\EyeDiseaseDetect\data")
-    Tree = search_assets_structure(data_path / "assets", data_path / "assets")
-    print(Tree)
-    # StreamerMap: Dict[str, ThreadedStreamer] = {
-    # "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models")),
-    # }
-    # ModelInfo: Dict[str, Dict[str, str]] = {
-    # "Yolov5s": {"name": "测试模型", "model": "Yolov5s", "category": "disease"}
-    # }
     app.config['UPLOAD_FOLDER'] = str(data_path / "assets")
-    # 启动后台服务器
     app.run(port=21335)

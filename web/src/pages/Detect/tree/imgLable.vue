@@ -53,28 +53,29 @@ onMounted(() => {
     const count = shapeList.length
     const shape: Shape = shapeList[count - 1]
     console.log("Create", shape)
+    console.log(shape.getPositions())
     shape.disabled()
     const newTag = `${shape.tagContent} ${count}`
     shape.setTag(newTag)
 
     // 添加节点和边
-    addNodes([
-        {
-          id: newTag,
-          position: {x: 150, y: 50},
-          label: 'Node 2',
-          template: markRaw(StaticImg),
-        }
-      ]
-    )
-    addEdges([
-      {
-        id: 'e' + newTag,
-        animated: true,
-        source: 'root',
-        target: newTag,
-      }
-    ])
+    // addNodes([
+    //     {
+    //       id: newTag,
+    //       position: {x: 150, y: 50},
+    //       label: 'Node 2',
+    //       template: markRaw(StaticImg),
+    //     }
+    //   ]
+    // )
+    // addEdges([
+    //   {
+    //     id: 'e' + newTag,
+    //     animated: true,
+    //     source: 'root',
+    //     target: newTag,
+    //   }
+    // ])
     // onLayout("LR")
   })
 })

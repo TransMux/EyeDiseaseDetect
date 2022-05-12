@@ -6,7 +6,13 @@ from pathlib import Path
 def meta_template():
     return {
         "create_time": int(time.time()),
-        "result": {}
+        "tree": [
+            {"id": 'root',
+             "type": 'root',
+             "label": 'root',
+             "style": "{border: '1px solid #0163f7', padding: '5px', borderRadius: '5px'}",
+             "position": "{x: 250, y: 5}"}
+        ]
     }
 
 
@@ -52,6 +58,9 @@ def search_assets_structure(path: Path, assets: Path, depth=0):
                 pass
         else:
             # 文件夹
+            if item.name.endswith(".crop"):
+                #     裁剪目录
+                continue
             children = search_assets_structure(item, assets, depth + 1)
             result.append(
                 {
