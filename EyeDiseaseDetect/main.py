@@ -2,9 +2,8 @@ import json
 import os
 import sys
 
-from EyeDiseaseDetect.Models.Glaucoma.Demo_DENet_GlaucomaScreen import Glaucoma
-
 sys.path.append("..")
+from EyeDiseaseDetect.Models.Glaucoma.Demo_DENet_GlaucomaScreen import Glaucoma
 from pathlib import Path
 from typing import Dict
 
@@ -15,7 +14,6 @@ from werkzeug.utils import secure_filename
 
 from EyeDiseaseDetect.Models.ModelConstructor import ConstructModelPipe
 from EyeDiseaseDetect.Models.utils import change_status
-from EyeDiseaseDetect.Models.yolov5s import Yolov5s
 from EyeDiseaseDetect.Responses import code_0, internal_error, NotAllowed
 from EyeDiseaseDetect.utils import search_assets_structure
 
@@ -119,17 +117,17 @@ def uploader():
 
 
 if __name__ == '__main__':
-    data_path = Path(r"E:\competition\EyeDiseaseDetect\data")
+    data_path = Path(r"../data")
     Tree = search_assets_structure(data_path / "assets", data_path / "assets")
     print(Tree)
     StreamerMap: Dict[str, ThreadedStreamer] = {
-        "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models")),
+        # "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models")),
         "Glaucoma": ConstructModelPipe(Glaucoma())
     }
     ModelInfo: Dict[str, Dict[str, str]] = {
-        "Yolov5s": {"name": "Yolov5s", "model": "Yolov5s", "category": "disease"},
+        # "Yolov5s": {"name": "Yolov5s", "model": "Yolov5s", "category": "disease"},
         "Glaucoma": {"name": "DENet", "model": "DENet", "category": "disease"}
     }
     app.config['UPLOAD_FOLDER'] = str(data_path / "assets")
     # 启动后台服务器
-    app.run(port=21335)
+    app.run(host="0.0.0.0", port=21335)

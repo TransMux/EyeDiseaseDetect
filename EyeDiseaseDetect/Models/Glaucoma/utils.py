@@ -2,6 +2,7 @@ import numpy as np
 import scipy
 
 from skimage.measure import label, regionprops
+from skimage.transform import resize
 
 
 def pro_process(temp_img, input_size):
@@ -28,7 +29,7 @@ def BW_img(input, thresholding):
 
 
 def Deep_Screening(target_model, tmp_img, input_size):
-    temp_img = scipy.misc.imresize(tmp_img, (input_size, input_size, 3))
+    temp_img = resize(tmp_img, (input_size, input_size, 3))
     temp_img = np.reshape(temp_img, (1,) + temp_img.shape)
     Pre_result = target_model.predict(temp_img)
     return Pre_result

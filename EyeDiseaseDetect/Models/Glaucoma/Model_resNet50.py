@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-from tensorflow.eras.layers import Input
 from tensorflow.keras import backend as K
 from tensorflow.keras import layers
 from tensorflow.keras.layers import Activation
@@ -10,6 +9,7 @@ from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
+from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.layers import ZeroPadding2D
 from tensorflow.keras.models import Model

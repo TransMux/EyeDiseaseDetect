@@ -6,32 +6,31 @@ from typing import List
 
 import cv2
 import numpy as np
-import scipy
 from keras.preprocessing import image
-from scipy.misc import imsave
+# from scipy.misc import imsave
 from skimage.measure import regionprops, label
-from skimage.transform import rotate
+from skimage.transform import rotate, resize
 
 from EyeDiseaseDetect.Models.ModelConstructor import BaseModel
 from EyeDiseaseDetect.Models.utils import change_status, update_meta, predict_result_template
-from utils import BW_img, Deep_Screening, Disc_Crop
+from .utils import BW_img, Deep_Screening, Disc_Crop
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
-import Model_Disc_Seg as DiscSegModel
-import Model_resNet50 as ScreenModel
-import Model_UNet_Side as DiscModel
+from . import Model_Disc_Seg as DiscSegModel
+from . import Model_resNet50 as ScreenModel
+from . import Model_UNet_Side as DiscModel
 
 Img_Seg_size = 640
 Img_Scr_size = 400
 ROI_Scr_size = 224
 
-pre_model_DiscSeg = './pre_model/pre_model_DiscSeg.h5'
-pre_model_img = './pre_model/pre_model_img.h5'
-pre_model_ROI = './pre_model/pre_model_ROI.h5'
-pre_model_flat = './pre_model/pre_model_flat.h5'
-pre_model_disc = './pre_model/pre_model_disc.h5'
+pre_model_DiscSeg = './Models/Glaucoma/pre_model/pre_model_DiscSeg.h5'
+pre_model_img = './Models/Glaucoma/pre_model/pre_model_img.h5'
+pre_model_ROI = './Models/Glaucoma/pre_model/pre_model_ROI.h5'
+pre_model_flat = './Models/Glaucoma/pre_model/pre_model_flat.h5'
+pre_model_disc = './Models/Glaucoma/pre_model/pre_model_disc.h5'
 
 data_type = '.jpg'
 
@@ -59,12 +58,12 @@ class Glaucoma(BaseModel):
             org_img = np.asarray(image.load_img(pic))  # + temp_txt[0]
 
             img_scale = 2048.0 / org_img.shape[0]
-            org_img = scipy.misc.imresize(org_img, (2048, int(org_img.shape[1] * img_scale), 3))
+            org_img = resize(org_img, (2048, int(org_img.shape[1] * img_scale), 3))
 
             start_time = time()
 
             # disc segmentation
-            temp_img = scipy.misc.imresize(org_img, (Img_Seg_size, Img_Seg_size, 3))
+            temp_img = resize(org_img, (Img_Seg_size, Img_Seg_size, 3))
             temp_img = np.reshape(temp_img, (1,) + temp_img.shape)
             [prob_6, prob_7, prob_8, prob_9, prob_10] = seg_model.predict([temp_img])
             disc_map = np.reshape(prob_10, (Img_Seg_size, Img_Seg_size))
@@ -103,10 +102,11 @@ class Glaucoma(BaseModel):
                 self.__class__.__name__,
                 predict_result_template(
                     status="Finish",
-                    results={'Img_pred': Img_pred,
-                             'Disc_pred': Disc_pred, 'Polar_pred': Polar_pred, 'Seg_pred': Seg_pred,
-                             'DENet_pred': DENet_pred},
-                    overall_confident=DENet_pred
+                    results={'Img_pred': Img_pred.tolist(),
+                             'Disc_pred': Disc_pred.tolist(), 'Polar_pred': Polar_pred.tolist(),
+                             'Seg_pred': Seg_pred.tolist(),
+                             'DENet_pred': DENet_pred.tolist()},
+                    overall_confident=DENet_pred.item()
                 )
             )
         return [{}]
