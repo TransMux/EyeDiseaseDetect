@@ -126,7 +126,7 @@ if __name__ == '__main__':
     }
     ModelInfo: Dict[str, Dict[str, str]] = {
         # "Yolov5s": {"name": "Yolov5s", "model": "Yolov5s", "category": "disease"},
-        "Glaucoma": {"name": "DENet", "model": "DENet", "category": "disease"}
+        "Glaucoma": {"name": "Glaucoma", "model": "DENet", "category": "disease"}
     }
     app.config['UPLOAD_FOLDER'] = str(data_path / "assets")
     # 启动后台服务器
