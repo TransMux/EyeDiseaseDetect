@@ -14,6 +14,7 @@ export interface Predict {
 export interface ListData {
   name: string;
   model: string;
+  assay: string;
   confidence?: number;
   status: string;
   path: string;

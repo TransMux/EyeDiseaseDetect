@@ -12,13 +12,15 @@
     <t-tabs v-model="value" v-if="OpeningImg">
       <t-tab-panel :value="1">
         <template #label>
-          <t-icon name="scan" class="tabs-icon-margin" />病变特征检测
+          <t-icon name="scan" class="tabs-icon-margin"/>
+          病变特征检测
         </template>
-        <diseaseVue :models="DiseaseModels" />
+        <diseaseVue :models="DiseaseModels"/>
       </t-tab-panel>
       <t-tab-panel :value="2">
         <template #label>
-          <t-icon name="chart-bubble" class="tabs-icon-margin" />疾病风险评估
+          <t-icon name="chart-bubble" class="tabs-icon-margin"/>
+          疾病风险评估
         </template>
         <!-- <diseaseVue /> -->
       </t-tab-panel>
@@ -49,7 +51,7 @@ onMounted(() => fetchModelInfo())
 const model_info = ref<{ String: Model[] }>(null)
 const fetchModelInfo = async () => {
   try {
-    const res: ResDataType = await request.get('/api/models/list');
+    const res: ResDataType = await request.get('http://43.138.152.86:21335/api/models/list');
     if (res.code === 0) {
       model_info.value = res.data
       console.log("模型信息:", model_info.value);
@@ -84,7 +86,7 @@ onMounted(() => {
   // https://github.com/hold-baby/label-img
   labeler = new LabelImg(<HTMLDivElement>img.value, {
     //@ts-ignore
-    width: 1400,
+    width: 1000,
     height: 600,
     bgColor: `#000`, // 背景色
     //@ts-ignore
@@ -95,7 +97,7 @@ onMounted(() => {
   watch(OpeningImg, () => {
     console.log(OpeningImg.value);
 
-    const url = `http://localhost:21335/api/picture/${OpeningImg.value.value}`
+    const url = `http://43.138.152.86:21335/api/picture/${OpeningImg.value.value}`
     console.log("<Tabs> Load url:", url);
     labeler.load(url);
   })
@@ -164,6 +166,7 @@ const value = ref(1);
   /* left: 25%; */
   margin-top: 30px;
   margin-bottom: 30px;
+  margin-left: 16vw
 }
 
 .t-tabs__nav-item {

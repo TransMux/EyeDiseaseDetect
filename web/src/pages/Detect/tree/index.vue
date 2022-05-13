@@ -4,13 +4,13 @@
       <div class="list-tree-operator">
         <t-input v-model="filterText" clearable placeholder="请输入关键词" @change="onInput">
           <template #prefix-icon>
-            <search-icon size="20px" />
+            <search-icon @click="fetchData" size="20px"/>
           </template>
         </t-input>
-        <t-tree :data="TREE_DATA" activable hover expand-on-click-node empty="正在加载数据..." @click="handleTreeActive" />
+        <t-tree :data="TREE_DATA" activable hover expand-on-click-node @click="handleTreeActive" :filter="filterByText"/>
       </div>
       <div class="list-tree-content">
-        <Tabs :update="fetchData" />
+        <Tabs :update="fetchData"/>
       </div>
     </div>
   </div>
@@ -25,7 +25,7 @@ import { ListData, SingleEyeImg } from '../types';
 const OpeningImg = ref<SingleEyeImg>(null);
 provide('OpeningImg', OpeningImg);
 
-function handleTreeActive({ node }: { node: { data: SingleEyeImg } }) {
+function handleTreeActive({node}: { node: { data: SingleEyeImg } }) {
   if (!node.data.children) {
     console.log('is img');
     OpeningImg.value = node.data;
@@ -46,18 +46,22 @@ interface ResDataType {
 }
 
 const fetchData = async () => {
-  dataLoading.value = true;
+  // dataLoading.value = true;
   try {
-    const res: ResDataType = await request.get('/api/tree/update');
+    const res: ResDataType = await request.get('http://43.138.152.86:21335/api/tree/update');
     if (res.code === 0) {
       TREE_DATA.value = res.data;
     }
   } catch (e) {
     console.log(e);
   } finally {
-    dataLoading.value = false;
+    // dataLoading.value = false;
   }
 };
+
+// setInterval(() => {
+//   fetchData()
+// }, 5000)
 
 onMounted(() => {
   fetchData();
