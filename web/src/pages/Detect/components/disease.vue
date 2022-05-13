@@ -4,7 +4,12 @@
   </t-message>
   <div class="list-common-table">
     <div class="table-container">
-      <t-table :data="data" :columns="COLUMNS" :row-key="rowKey" :vertical-align="verticalAlign" :hover="hover">
+      <t-table :data="data" :columns="COLUMNS" :row-key="rowKey" :vertical-align="verticalAlign" :hover="hover"
+               :expanded-row-keys="expandedRowKeys"
+               expand-on-row-click
+               :expand-icon="false"
+               @expand-change="rehandleExpandChange"
+      >
         <template #status="{ row }">
           <t-tag v-if="row.status === 'Waiting'" theme="warning" variant="light"> 排队中</t-tag>
           <t-tag v-if="row.status === 'Predict'" theme="warning" variant="light"> 预测中</t-tag>
@@ -15,10 +20,27 @@
           <t-button v-if="row.status === 'Unpredicted'" theme="default" @click="requestPredict(row)"> 预测</t-button>
           <t-button v-if="row.status === 'Finish'" theme="success" @click="focus(row)"> 聚焦</t-button>
         </template>
+        <template #expandedRow="{ row }">
+          <p class="title" style="text-align: center;font-size: 20px"> - 检测详情 - </p>
+          <br/>
+          <div class="more-detail" style="columns: 5">
+            <p class="title"><b>DENet_pred: </b>{{ row.results["DENet_pred"] }}</p>
+            <br/>
+            <p class="title"><b>Disc_pred: </b>{{ row.results["Disc_pred"][0][1] }}</p>
+            <br/>
+            <p class="title"><b>Img_pred: </b>{{ row.results["Img_pred"][0][1] }}</p>
+            <br/>
+            <p class="title"><b>Polar_pred: </b>{{ row.results["Polar_pred"][0][1] }}</p>
+            <br/>
+            <p class="title"><b>Seg_pred: </b>{{ row.results["Seg_pred"][0][1] }}</p>
+            <br/>
+          </div>
+        </template>
       </t-table>
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import { inject, ref, watch, watchEffect } from 'vue';
 import { MessagePlugin } from 'tdesign-vue-next';
@@ -110,6 +132,12 @@ const COLUMNS = [
   },
   {title: '操作', colKey: 'op', width: 200, cell: {col: 'status'}},
 ];
+
+const expandedRowKeys = ref(["0"]);
+const rehandleExpandChange = (value, {expandedRowData}) => {
+  expandedRowKeys.value = value;
+  console.log('rehandleExpandChange', value, expandedRowData);
+};
 
 const rowKey = 'index';
 const verticalAlign = 'top';
