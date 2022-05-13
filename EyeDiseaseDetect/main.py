@@ -3,7 +3,7 @@ import os
 import sys
 
 sys.path.append("..")
-from EyeDiseaseDetect.Models.Glaucoma.Demo_DENet_GlaucomaScreen import Glaucoma
+from EyeDiseaseDetect.Models.Glaucoma.Real_DENet import Glaucoma
 from pathlib import Path
 from typing import Dict
 
@@ -13,7 +13,6 @@ from service_streamer import ThreadedStreamer
 from werkzeug.utils import secure_filename
 
 from EyeDiseaseDetect.Models.ModelConstructor import ConstructModelPipe
-from EyeDiseaseDetect.Models.utils import change_status
 from EyeDiseaseDetect.Responses import code_0, internal_error, NotAllowed
 from EyeDiseaseDetect.utils import search_assets_structure
 
@@ -22,7 +21,7 @@ cors = CORS(app, supports_credentials=True)
 
 # 异步预测
 Running_Tasks = []
-
+glaucoma = Glaucoma()
 
 # 每次添加模型都必须在这里配置！
 
@@ -89,13 +88,14 @@ def submit(path, model):
 
     try:
         assert img_path.exists(), "FileNotFound"
-        Running_Tasks.append(
-            StreamerMap[model].submit(
-                [img_path]
-            )
-        )
+        # Running_Tasks.append(
+        #     StreamerMap[model].submit(
+        #         [img_path]
+        #     )
+        # )
+        glaucoma.predict([img_path])
         print(f"{path} to {model} 未被预测，添加到队列中...")
-        change_status([img_path], model, "Waiting")
+        # change_status([img_path], model, "Waiting")
         return code_0(None, msg="成功新建异步预测任务")
     except Exception as e:
         return internal_error(e.__repr__())

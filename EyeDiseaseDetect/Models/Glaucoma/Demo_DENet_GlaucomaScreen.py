@@ -1,5 +1,4 @@
 #
-import os
 from pathlib import Path
 from time import time
 from typing import List
@@ -13,14 +12,10 @@ from skimage.transform import rotate, resize
 
 from EyeDiseaseDetect.Models.ModelConstructor import BaseModel
 from EyeDiseaseDetect.Models.utils import change_status, update_meta, predict_result_template
-from .utils import BW_img, Deep_Screening, Disc_Crop
-
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-
 from . import Model_Disc_Seg as DiscSegModel
-from . import Model_resNet50 as ScreenModel
 from . import Model_UNet_Side as DiscModel
+from . import Model_resNet50 as ScreenModel
+from .utils import BW_img, Deep_Screening, Disc_Crop
 
 Img_Seg_size = 640
 Img_Scr_size = 400

@@ -76,8 +76,23 @@ const requestPredict = async (raw: ListData) => {
 
 const data = ref<ListData[]>([]);
 
+
+const expandedRowKeys = ref([""]);
+const rehandleExpandChange = (value, {expandedRowData}) => {
+  expandedRowKeys.value = value;
+  console.log('rehandleExpandChange', value, expandedRowData);
+};
+
+const rowKey = 'index';
+const verticalAlign = 'top';
+const hover = true;
+
+const focus = inject<CallableFunction>('focus');
+
+
 watchEffect(() => {
   console.log('Disease:开始映射数据');
+  expandedRowKeys.value = [""]
 
   data.value = [];
   props.models.forEach((model) => {
@@ -132,18 +147,6 @@ const COLUMNS = [
   },
   {title: '操作', colKey: 'op', width: 200, cell: {col: 'status'}},
 ];
-
-const expandedRowKeys = ref(["0"]);
-const rehandleExpandChange = (value, {expandedRowData}) => {
-  expandedRowKeys.value = value;
-  console.log('rehandleExpandChange', value, expandedRowData);
-};
-
-const rowKey = 'index';
-const verticalAlign = 'top';
-const hover = true;
-
-const focus = inject<CallableFunction>('focus');
 </script>
 
 <style lang="less">
