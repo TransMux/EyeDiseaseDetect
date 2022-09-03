@@ -1,5 +1,5 @@
 <template>
-  <div :class="prefix + '-footer'">Mux - All Rights Reserved @ Eye disease detection</div>
+  <div :class="prefix + '-footer'">Mux - All Rights Reserved @ Pneumonia Detection</div>
 </template>
 
 <script setup lang="ts">

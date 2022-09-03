@@ -3,7 +3,7 @@ import os
 import sys
 
 sys.path.append("..")
-from EyeDiseaseDetect.Models.Glaucoma.Real_DENet import Glaucoma
+from EyeDiseaseDetect.Models.ResNet.ResNet import Pneumonia
 from pathlib import Path
 from typing import Dict
 
@@ -21,7 +21,7 @@ cors = CORS(app, supports_credentials=True)
 
 # 异步预测
 Running_Tasks = []
-glaucoma = Glaucoma()
+glaucoma = Pneumonia()
 
 # 每次添加模型都必须在这里配置！
 
@@ -96,7 +96,7 @@ def submit(path, model):
         glaucoma.predict([img_path])
         print(f"{path} to {model} 未被预测，添加到队列中...")
         # change_status([img_path], model, "Waiting")
-        return code_0(None, msg="成功新建异步预测任务")
+        return code_0(None, msg="Successfully created prediction task")
     except Exception as e:
         return internal_error(e.__repr__())
 
@@ -122,11 +122,11 @@ if __name__ == '__main__':
     print(Tree)
     StreamerMap: Dict[str, ThreadedStreamer] = {
         # "Yolov5s": ConstructModelPipe(Yolov5s(data_path / "models")),
-        "Glaucoma": ConstructModelPipe(Glaucoma())
+        "Pneumonia": ConstructModelPipe(Pneumonia())
     }
     ModelInfo: Dict[str, Dict[str, str]] = {
         # "Yolov5s": {"name": "Yolov5s", "model": "Yolov5s", "category": "disease"},
-        "Glaucoma": {"name": "Glaucoma", "model": "DENet", "category": "disease"}
+        "Pneumonia": {"name": "Pneumonia", "model": "ResNet152", "category": "disease"}
     }
     app.config['UPLOAD_FOLDER'] = str(data_path / "assets")
     # 启动后台服务器

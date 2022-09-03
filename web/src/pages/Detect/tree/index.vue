@@ -48,7 +48,7 @@ interface ResDataType {
 const fetchData = async () => {
   // dataLoading.value = true;
   try {
-    const res: ResDataType = await request.get('http://43.138.152.86:21335/api/tree/update');
+    const res: ResDataType = await request.get('http://localhost:21335/api/tree/update');
     if (res.code === 0) {
       TREE_DATA.value = res.data;
     }

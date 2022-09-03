@@ -20,7 +20,7 @@ def label_template(
 def predict_result_template(
         model=None,
         status=None,
-        results: List = None,
+        results=None,
         overall_confident=None,
 ):
     return {

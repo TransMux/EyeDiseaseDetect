@@ -7,7 +7,7 @@ export default [
     path: '/upload',
     redirect: '/upload/base',
     component: Layout,
-    meta: { title: '上传', icon: CloudUploadIcon, single: true },
+    meta: { title: 'Upload', icon: CloudUploadIcon, single: true },
     children: [
       {
         path: 'base',
@@ -21,7 +21,7 @@ export default [
     component: Layout,
     name: 'detection',
     redirect: '/detect/base',
-    meta: { title: '检测', icon: ChartBar, single: true },
+    meta: { title: 'Detection', icon: ChartBar, single: true },
     children: [
       {
         path: 'base',

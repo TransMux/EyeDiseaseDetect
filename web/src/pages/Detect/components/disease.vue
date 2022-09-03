@@ -10,31 +10,16 @@
                :expand-icon="false"
                @expand-change="rehandleExpandChange"
       >
+        <template #result="{ row }">
+          <t-tag v-if="row.results === 'yes'" theme="warning" variant="light"> 患病</t-tag>
+          <t-tag v-else-if="row.results === 'no'" theme="success" variant="light"> 健康</t-tag>
+          <t-button v-else theme="default" @click="requestPredict(row)"> 预测</t-button>
+        </template>
         <template #status="{ row }">
           <t-tag v-if="row.status === 'Waiting'" theme="warning" variant="light"> 排队中</t-tag>
           <t-tag v-if="row.status === 'Predict'" theme="warning" variant="light"> 预测中</t-tag>
           <t-tag v-if="row.status === 'Finish'" theme="success" variant="light"> 已完成</t-tag>
           <t-tag v-if="row.status === 'Unpredicted'" theme="danger" variant="light"> 未预测</t-tag>
-        </template>
-        <template #op="{ row }">
-          <t-button v-if="row.status === 'Unpredicted'" theme="default" @click="requestPredict(row)"> 预测</t-button>
-          <t-button v-if="row.status === 'Finish'" theme="success" @click="focus(row)"> 聚焦</t-button>
-        </template>
-        <template #expandedRow="{ row }">
-          <p class="title" style="text-align: center;font-size: 20px"> - 检测详情 - </p>
-          <br/>
-          <div class="more-detail" style="columns: 5">
-            <p class="title"><b>DENet_pred: </b>{{ row.results["DENet_pred"] }}</p>
-            <br/>
-            <p class="title"><b>Disc_pred: </b>{{ row.results["Disc_pred"][0][1] }}</p>
-            <br/>
-            <p class="title"><b>Img_pred: </b>{{ row.results["Img_pred"][0][1] }}</p>
-            <br/>
-            <p class="title"><b>Polar_pred: </b>{{ row.results["Polar_pred"][0][1] }}</p>
-            <br/>
-            <p class="title"><b>Seg_pred: </b>{{ row.results["Seg_pred"][0][1] }}</p>
-            <br/>
-          </div>
         </template>
       </t-table>
     </div>
@@ -62,7 +47,7 @@ console.log(props);
 const requestPredict = async (raw: ListData) => {
   console.log(raw);
   try {
-    const res: ResDataType = await request.get(`http://43.138.152.86:21335/api/task/Glaucoma/${raw.path}`);
+    const res: ResDataType = await request.get(`http://localhost:21335/api/task/Pneumonia/${raw.path}`);
     if (res.code === 0) {
       MessagePlugin.info(res.msg);
       raw.status = 'Predict';
@@ -97,21 +82,21 @@ watchEffect(() => {
   data.value = [];
   props.models.forEach((model) => {
     // console.log(model.model)
-    if ("Glaucoma" in OpeningImg.value.meta.result) {
+    if ("Pneumonia" in OpeningImg.value.meta.result) {
       data.value.push({
-        name: "青光眼 Glaucoma",
-        model: "DENet",
-        assay: "Disc-aware Ensemble Network for Glaucoma Screening from Fundus Image",
-        confidence: OpeningImg.value.meta.result["Glaucoma"].overall_confident,
-        status: OpeningImg.value.meta.result["Glaucoma"].status,
+        name: "肺炎 Pneumonia",
+        model: "ResNet",
+        assay: "Deep Residual Learning for Image Recognition",
+        confidence: OpeningImg.value.meta.result["Pneumonia"].overall_confident,
+        status: OpeningImg.value.meta.result["Pneumonia"].status,
         path: OpeningImg.value.value,
-        results: OpeningImg.value.meta.result["Glaucoma"].results,
+        results: OpeningImg.value.meta.result["Pneumonia"].results.type,
       });
     } else {
       data.value.push({
-        name: "青光眼 Glaucoma",
-        model: "DENet",
-        assay: "Disc-aware Ensemble Network for Glaucoma Screening from Fundus Image",
+        name: "肺炎 ResNet",
+        model: "ResNet",
+        assay: "Deep Residual Learning for Image Recognition",
         // confidence: 0,
         status: 'Unpredicted',
         path: OpeningImg.value.value,
@@ -139,13 +124,13 @@ const COLUMNS = [
     colKey: 'model',
   },
   {title: '任务状态', colKey: 'status', width: 200, cell: {col: 'status'}},
+  {title: '结果', colKey: 'result', width: 200, cell: {col: 'results'}},
   {
     title: '置信度',
     width: 200,
     ellipsis: true,
     colKey: 'confidence',
   },
-  {title: '操作', colKey: 'op', width: 200, cell: {col: 'status'}},
 ];
 </script>
 

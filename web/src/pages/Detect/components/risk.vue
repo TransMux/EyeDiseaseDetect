@@ -116,7 +116,7 @@ const dataLoading = ref(false);
 const fetchData = async () => {
   dataLoading.value = true;
   try {
-    const res: ResDataType = await request.get('http://43.138.152.86:21335/api/get-list');
+    const res: ResDataType = await request.get('http://localhost:21335/api/get-list');
     if (res.code === 0) {
       const { list = [] } = res.data;
       data.value = list;
